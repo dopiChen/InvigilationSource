@@ -41,5 +41,6 @@ public class ExaminationController {
         List<Examination> examinationList = examinationService.list(queryWrapper);
         return JsonResponse.success( examinationList);
     }
+
 }
 

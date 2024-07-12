@@ -42,6 +42,12 @@ public class BatchController {
     public JsonResponse<Boolean> createBatch(@RequestBody Batch batch) {
         return JsonResponse.success(batchService.save(batch));
     }
+    //根据批次关键词查询
+     @GetMapping("/searchBatch/{keyword}")
+    @ResponseBody
+     public JsonResponse<List<Batch>> searchBatch(@PathVariable("keyword") String keyword) {
+        return JsonResponse.success(batchService.searchBatch(keyword));
+     }
 
 }
 

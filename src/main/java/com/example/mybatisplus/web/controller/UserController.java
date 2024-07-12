@@ -1,5 +1,6 @@
 package com.example.mybatisplus.web.controller;
 
+import com.example.mybatisplus.common.utls.SessionUtils;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.stereotype.Controller;
 import org.slf4j.Logger;
@@ -37,7 +38,13 @@ public class UserController {
     @ResponseBody
     public JsonResponse getById(@RequestBody User user)throws Exception {
         User  one =  userService.login(user);
-        return JsonResponse.success(one);
+        if(one!=null){
+            SessionUtils.saveCurrentUserInfo(one);
+            return JsonResponse.success(one);
+
+        }else{
+            return JsonResponse.failure("用户名或密码错误");
+        }
     }
 }
 

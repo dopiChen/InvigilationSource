@@ -8,6 +8,8 @@ import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+
 /**
  * <p>
  * 批次表 服务实现类
@@ -18,5 +20,10 @@ import org.springframework.stereotype.Service;
  */
 @Service
 public class BatchServiceImpl extends ServiceImpl<BatchMapper, Batch> implements BatchService {
-
+    @Autowired
+       private BatchMapper batchMapper;
+    @Override
+    public List<Batch> searchBatch(String keyword) {
+        return batchMapper.searchBatch(keyword);
+    }
 }

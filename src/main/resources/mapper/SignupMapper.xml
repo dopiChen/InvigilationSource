@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.example.mybatisplus.mapper.SignupMapper">
+
+    <!-- 通用查询映射结果 -->
+    <resultMap id="BaseResultMap" type="com.example.mybatisplus.model.domain.Signup">
+        <id column="exam_id" property="examId" />
+        <result column="username" property="username" />
+        <result column="approval_status" property="approvalStatus" />
+        <result column="intended_campus" property="intendedCampus" />
+        <result column="reson" property="reson" />
+        <result column="way" property="way" />
+        <result column="name" property="name" />
+    </resultMap>
+    <select id="getExamineSignUp" resultMap="BaseResultMap">
+        select * from signup where approval_status = #{usertype}
+    </select>
+
+</mapper>

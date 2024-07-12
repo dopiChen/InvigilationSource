@@ -12,5 +12,8 @@
         <result column="description" property="description" />
         <result column="attachment" property="attachment" />
     </resultMap>
+    <select id="searchBatch" resultMap="BaseResultMap" parameterType="java.lang.String">
+        select * from batch where batch_name like concat('%',#{keyword},'%')
+    </select>
 
 </mapper>
