@@ -9,6 +9,7 @@
         <result column="name" property="name" />
         <result column="usertype" property="usertype" />
         <result column="is_deleted" property="isDeleted" />
+        <result column="enable" property="isEnabled" />
     </resultMap>
 
 </mapper>

@@ -35,6 +35,7 @@ public class User extends Model<User> {
     private int usertype;
 
     private Boolean isDeleted;
+    private Boolean isEnabled;
 
 
     @Override

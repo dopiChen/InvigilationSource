@@ -189,7 +189,7 @@ public class CodeGenerator {
         strategy.setSuperControllerClass("com.example.mybatisplus.common.BaseController");
         strategy.setEntityLombokModel(true);//启用lombok注解
         strategy.setChainModel(true);//启用lombok链式注解
-        strategy.setInclude("user");//设置要生成的表名");
+        strategy.setInclude("examination");//设置要生成的表名");
        //strategy.setTablePrefix("caps_");//去表前缀配置
 
         mpg.setGlobalConfig(gc);
