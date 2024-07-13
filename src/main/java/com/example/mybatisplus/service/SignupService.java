@@ -15,7 +15,11 @@ import java.util.List;
  */
 public interface SignupService extends IService<Signup> {
 
-    List<Signup> getExamineSignUp(int usertype);
+    List<Signup> getExamineSignUp(String username,int usertype);
 
-    Signup allowSignUp(Signup signup);
+    void allowSignUp(Signup signup);
+
+    void disallowSignUp(Signup one);
+
+    List<Signup> getFinalNameList();
 }

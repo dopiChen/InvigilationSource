@@ -1,5 +1,6 @@
 package com.example.mybatisplus.model.domain;
 
+import com.baomidou.mybatisplus.annotation.TableField;
 import com.baomidou.mybatisplus.annotation.TableId;
 import com.baomidou.mybatisplus.extension.activerecord.Model;
 import java.io.Serializable;
@@ -37,9 +38,14 @@ public class Signup extends Model<Signup> {
     private String reson;
 
     private String way;
+
     private String name;
-
-
+    @TableField("is_out")
+    private int isOut;
+    @TableField(exist = false)
+    private Personnel personnel;
+    @TableField(exist = false)
+    private Examination examination;
     @Override
     protected Serializable pkVal() {
         return this.examId;

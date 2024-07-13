@@ -18,5 +18,7 @@ import java.util.List;
 @Mapper
 public interface SignupMapper extends BaseMapper<Signup> {
 
-    List<Signup> getExamineSignUp(@Param("usertype") int usertype);
+    List<Signup> getExamineSignUp(@Param("username") String username,@Param("usertype") int usertype);
+
+    List<Signup> getFinalNameList();
 }

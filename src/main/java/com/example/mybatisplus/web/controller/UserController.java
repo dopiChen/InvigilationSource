@@ -1,6 +1,8 @@
 package com.example.mybatisplus.web.controller;
 
 import com.example.mybatisplus.common.utls.SessionUtils;
+import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiOperation;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.stereotype.Controller;
 import org.slf4j.Logger;
@@ -23,6 +25,7 @@ import com.example.mybatisplus.model.domain.User;
  */
 @Controller
 @RequestMapping("/user")
+@Api(tags = "用户管理")
 public class UserController {
 
     private final Logger logger = LoggerFactory.getLogger( UserController.class );
@@ -36,6 +39,7 @@ public class UserController {
     */
     @PostMapping(value = "/login")
     @ResponseBody
+    @ApiOperation(value = "用户登录",notes = "根据用户名和密码查询用户")
     public JsonResponse getById(@RequestBody User user)throws Exception {
         User  one =  userService.login(user);
         if(one!=null){

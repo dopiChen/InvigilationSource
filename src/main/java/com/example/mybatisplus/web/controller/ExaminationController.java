@@ -1,6 +1,8 @@
 package com.example.mybatisplus.web.controller;
 
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
+import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiOperation;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.stereotype.Controller;
 import org.slf4j.Logger;
@@ -25,6 +27,7 @@ import java.util.List;
  */
 @Controller
 @RequestMapping("/examination")
+@Api(tags = "具体考试信息")
 public class ExaminationController {
 
     private final Logger logger = LoggerFactory.getLogger( ExaminationController.class );
@@ -33,8 +36,9 @@ public class ExaminationController {
     private ExaminationService examinationService;
 
     //获取指定监考批次全部考试信息
-    @RequestMapping("/{batch_id}")
+    @GetMapping ("/{batch_id}")
     @ResponseBody
+    @ApiOperation( value="获取指定监考批次全部考试信息", notes="老师端获取指定监考批次全部考试信息" )
     public JsonResponse<List<Examination>> getExaminationByBatchId(@PathVariable("batch_id") String batch_id) {
         QueryWrapper<Examination> queryWrapper = new QueryWrapper<>();
         queryWrapper.eq("batch_id", batch_id);

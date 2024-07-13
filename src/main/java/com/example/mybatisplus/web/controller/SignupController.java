@@ -1,6 +1,8 @@
 package com.example.mybatisplus.web.controller;
 
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
+import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiOperation;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.stereotype.Controller;
 import org.slf4j.Logger;
@@ -24,7 +26,8 @@ import java.util.List;
  * @version v1.0
  */
 @Controller
-@RequestMapping("/api/signup")
+@RequestMapping("/signup")
+@Api(tags = "报名")
 public class SignupController {
 
     private final Logger logger = LoggerFactory.getLogger( SignupController.class );
@@ -40,6 +43,7 @@ public class SignupController {
     //老师查询自己的报名记录
     @GetMapping("/getSignup/{username}")
     @ResponseBody
+    @ApiOperation(value = "根据用户名查询报名记录",notes = "老师端根据用户名查询报名记录")
     public JsonResponse<List<Signup>> getSignup(@PathVariable("username") String username){
         QueryWrapper<Signup> queryWrapper = new QueryWrapper<>();
         queryWrapper.eq("username",username);
@@ -52,6 +56,7 @@ public class SignupController {
     // 老师自己报名提交审批
      @PostMapping("/addSignup")
      @ResponseBody
+     @ApiOperation(value = "自主报名审批",notes = "老师端自己报名提交审批")
      public JsonResponse<String> addSignup(@RequestBody Signup signup){
         if (signup!= null){
             signupService.save(signup);
@@ -65,6 +70,7 @@ public class SignupController {
      //领导邀请老师进行报名
      @PostMapping("/addSignupByLeader")
      @ResponseBody
+     @ApiOperation(value = "邀请报名审批",notes = "领导端邀请老师进行报名")
      public JsonResponse<String> addSignupByLeader(@RequestBody Signup signup) {
          if (signup != null) {
              signupService.save(signup);

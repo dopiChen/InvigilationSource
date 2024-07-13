@@ -1,6 +1,8 @@
 package com.example.mybatisplus.web.controller;
 
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
+import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiOperation;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.stereotype.Controller;
 import org.slf4j.Logger;
@@ -23,6 +25,7 @@ import com.example.mybatisplus.model.domain.Personnel;
  */
 @Controller
 @RequestMapping("/personnel")
+@Api(tags = "用户信息")
 public class PersonnelController {
 
     private final Logger logger = LoggerFactory.getLogger( PersonnelController.class );
@@ -32,8 +35,9 @@ public class PersonnelController {
 
 
     //用户端获取个人信息
-    @RequestMapping(value = "/information/{username}", method = RequestMethod.GET)
+    @GetMapping(value = "/information/{username}")
     @ResponseBody
+    @ApiOperation(value = "获取用户信息", notes = "根据用户名获取用户信息")
     public JsonResponse<Personnel> getUserInformation(@RequestParam("username") String username) {
         QueryWrapper<Personnel> queryWrapper=new QueryWrapper<>();
         queryWrapper.eq("username",username);
@@ -48,6 +52,7 @@ public class PersonnelController {
     //用户端修改个人信息
     @PostMapping("/information/update")
     @ResponseBody
+    @ApiOperation(value = "修改用户信息", notes = "根据用户名修改用户信息")
     public JsonResponse<String> updateUserInformation(@RequestBody Personnel personnel) {
         personnelService.updateById(personnel);
         return JsonResponse.success("修改成功");

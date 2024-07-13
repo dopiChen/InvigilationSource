@@ -4,16 +4,51 @@
 
     <!-- 通用查询映射结果 -->
     <resultMap id="BaseResultMap" type="com.example.mybatisplus.model.domain.Signup">
-        <id column="exam_id" property="examId" />
-        <result column="username" property="username" />
-        <result column="approval_status" property="approvalStatus" />
-        <result column="intended_campus" property="intendedCampus" />
-        <result column="reson" property="reson" />
-        <result column="way" property="way" />
-        <result column="name" property="name" />
+        <id column="exam_id" property="examId"/>
+        <result column="username" property="username"/>
+        <result column="approval_status" property="approvalStatus"/>
+        <result column="intended_campus" property="intendedCampus"/>
+        <result column="reson" property="reson"/>
+        <result column="way" property="way"/>
+        <result column="name" property="name"/>
+        <result column="is_out" property="isOut"/>
     </resultMap>
-    <select id="getExamineSignUp" resultMap="BaseResultMap">
-        select * from signup where approval_status = #{usertype}
-    </select>
+    <resultMap id="NamelistMap" type="com.example.mybatisplus.model.domain.Signup">
+        <association property="personnel" javaType="com.example.mybatisplus.model.domain.Personnel">
+            <id column="username" property="username" />
+            <result column="name" property="name" />
+            <result column="unit" property="unit" />
+            <result column="gender" property="gender" />
+            <result column="phone" property="phone" />
+    </association>
+        <association property="examination" javaType="com.example.mybatisplus.model.domain.Examination">
+            <id column="exam_id" property="examId" />
+            <result column="batch_id" property="batchId" />
+            <result column="exam_room" property="examRoom" />
+            <result column="campus" property="campus" />
+            <result column="address" property="address" />
+            <result column="from_time" property="fromTime" />
+            <result column="end_time" property="endTime" />
+        </association>
+    </resultMap>
 
+    <select id="getExamineSignUp" resultMap="BaseResultMap">
+        SELECT s.*
+        FROM signup s
+                 JOIN personnel p_user ON s.username = p_user.username
+        WHERE p_user.username IN (SELECT username
+                                  FROM personnel
+                                  WHERE unit = (SELECT unit FROM personnel WHERE username = #{username}))
+          AND s.approval_status = #{usertype}
+    </select>
+    <select id="getFinalNameList" resultMap="NamelistMap">
+        SELECT
+               p.username AS personnel_username, p.unit AS personnel_unit, p.name AS personnel_name,p.gender AS personnel_gender,p.phone AS personnel_phone,-- 添加 personnel 表的需要显示的属性
+               e.exam_id AS examination_exam_id, e.batch_id AS examination_batch_id,e.exam_room AS examination_exam_room,e.campus AS examination_campus,
+               e.exam_address AS examination_address,e.from_time AS examination_from_time,e.end_time AS examination_end_time-- 添加 examination 表的需要显示的属性
+        FROM signup s
+                 LEFT JOIN personnel p ON s.username = p.username
+                 LEFT JOIN examination e ON s.exam_id = e.exam_id
+            WHERE s.approval_status = 5
+    </select>
 </mapper>

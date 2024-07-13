@@ -5,6 +5,7 @@ import com.baomidou.mybatisplus.extension.activerecord.Model;
 import java.io.Serializable;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
+import io.swagger.annotations.ApiOperation;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.experimental.Accessors;
@@ -26,8 +27,9 @@ public class User extends Model<User> {
     private static final long serialVersionUID = 1L;
 
     @TableId("username")
+    @ApiModelProperty(value = "用户名", example = "10001", required = true)
     private String username;
-
+    @ApiModelProperty(value = "密码", example = "12345", required = true)
     private String password;
 
     private String name;
@@ -44,5 +46,13 @@ public class User extends Model<User> {
     }
 
     public void setLoginName(String 模拟) {
+    }
+
+    public void setUserType(int userType) {
+        this.usertype=userType;
+    }
+
+    public void setStatus(boolean status) {
+        this.isEnabled=status;
     }
 }
