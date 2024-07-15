@@ -44,39 +44,39 @@ public class SignupController {
     @GetMapping("/getSignup/{username}")
     @ResponseBody
     @ApiOperation(value = "根据用户名查询报名记录",notes = "老师端根据用户名查询报名记录")
-    public JsonResponse<List<Signup>> getSignup(@PathVariable("username") String username){
+    public JsonResponse<List<Signup>> getSignup(@PathVariable("username") String username) throws Exception{
         QueryWrapper<Signup> queryWrapper = new QueryWrapper<>();
         queryWrapper.eq("username",username);
         List<Signup> signupList = signupService.list(queryWrapper);
         if(signupList!= null){
          return  JsonResponse.success(signupList);
         }
-        return null;
+        throw new Exception("未找到记录");
     }
     // 老师自己报名提交审批
      @PostMapping("/addSignup")
      @ResponseBody
      @ApiOperation(value = "自主报名审批",notes = "老师端自己报名提交审批")
-     public JsonResponse<String> addSignup(@RequestBody Signup signup){
+     public JsonResponse<String> addSignup(@RequestBody Signup signup) throws Exception{
         if (signup!= null){
             signupService.save(signup);
             return JsonResponse.success("报名成功");
         }
         else
         {
-            return JsonResponse.failure("报名失败");
+            throw new Exception("报名失败");
         }
      }
      //领导邀请老师进行报名
      @PostMapping("/addSignupByLeader")
      @ResponseBody
      @ApiOperation(value = "邀请报名审批",notes = "领导端邀请老师进行报名")
-     public JsonResponse<String> addSignupByLeader(@RequestBody Signup signup) {
+     public JsonResponse<String> addSignupByLeader(@RequestBody Signup signup) throws Exception {
          if (signup != null) {
              signupService.save(signup);
              return JsonResponse.success("报名成功");
          } else {
-             return JsonResponse.failure("报名失败");
+             throw new Exception("报名失败");
          }
      }
 }

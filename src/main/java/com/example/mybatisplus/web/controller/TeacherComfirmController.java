@@ -22,7 +22,7 @@ public class TeacherComfirmController {
     @GetMapping("/allNotComfirms/{username}")
     @ResponseBody
     @ApiOperation(value = "通知教师确认参加", notes = "根据老师用户名返回已经通过的审批要求确认")
-    public JsonResponse<List<Signup>> getComfirmList(String username){
+    public JsonResponse<List<Signup>> getComfirmList(String username)  {
         List<Signup> list = signupService.getComfirmList(username);
         return JsonResponse.success(list);
     }
@@ -30,7 +30,7 @@ public class TeacherComfirmController {
     @PostMapping("/Docomfirm/{username}/{examId}")
     @ResponseBody
     @ApiOperation(value = "教师确认参加", notes = "根据老师用户名和考试id确认参加监考")
-    public JsonResponse<Signup> doComfirm(@PathVariable("username") String username, @PathVariable("examId") int examId){
+    public JsonResponse<Signup> doComfirm(@PathVariable("username") String username, @PathVariable("examId") int examId) throws Exception{
         QueryWrapper<Signup> queryWrapper = new QueryWrapper<>();
         queryWrapper.eq("username",username).eq("exam_id",examId);
         Signup signup = signupService.getOne(queryWrapper);
@@ -41,7 +41,7 @@ public class TeacherComfirmController {
             return JsonResponse.success(signup);
         }
 
-        return JsonResponse.failure("没有找到该记录");
+        throw new Exception("确认失败");
     }
 
 }

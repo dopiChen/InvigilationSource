@@ -47,7 +47,7 @@ public class UserController {
             return JsonResponse.success(one);
 
         }else{
-            return JsonResponse.failure("用户名或密码错误");
+            throw new Exception("登录失败");
         }
     }
 }

@@ -38,15 +38,14 @@ public class PersonnelController {
     @GetMapping(value = "/information/{username}")
     @ResponseBody
     @ApiOperation(value = "获取用户信息", notes = "根据用户名获取用户信息")
-    public JsonResponse<Personnel> getUserInformation(@RequestParam("username") String username) {
+    public JsonResponse<Personnel> getUserInformation(@RequestParam("username") String username) throws Exception{
         QueryWrapper<Personnel> queryWrapper=new QueryWrapper<>();
         queryWrapper.eq("username",username);
         Personnel one=personnelService.getOne(queryWrapper);
         if(one!=null){
-
             return JsonResponse.success(one);
         }else{
-            return JsonResponse.failure("用户不存在");
+            throw new Exception("用户不存在");
         }
     }
     //用户端修改个人信息
