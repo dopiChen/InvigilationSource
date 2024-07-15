@@ -46,5 +46,14 @@ public class ExaminationController {
         return JsonResponse.success( examinationList);
     }
 
+    //获取指定id考试信息
+    @GetMapping( "/getDetail/{id}")
+    @ResponseBody
+    @ApiOperation( value="获取指定id考试信息", notes="获取指定id考试信息" )
+    public JsonResponse<Examination> getExaminationById(@PathVariable("id") int id) {
+        Examination examination = examinationService.getById(id);
+        return JsonResponse.success( examination);
+    }
+
 }
 

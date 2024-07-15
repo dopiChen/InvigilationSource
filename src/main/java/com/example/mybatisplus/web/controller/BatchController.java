@@ -14,6 +14,7 @@ import com.example.mybatisplus.service.BatchService;
 import com.example.mybatisplus.model.domain.Batch;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 
 /**
@@ -54,8 +55,17 @@ public class BatchController {
     @ResponseBody
     @ApiOperation(value = "根据批次关键词查询", notes = "教师端根据批次关键词查询")
     public JsonResponse<List<Batch>> searchBatch(@PathVariable("keyword") String keyword) {
-        return JsonResponse.success(batchService.searchBatch(keyword));
+        List<Batch> batchList=batchService.list();
+        List<Batch> result=batchList.stream().filter(batch -> batch.getBatchName().contains(keyword)).collect(Collectors.toList());
+        return JsonResponse.success(result);
     }
 
+    @GetMapping("/getBatch/{batchId}")
+    @ResponseBody
+    @ApiOperation(value = "根据批次id查询", notes = "教师端根据批次id获取具体批次信息")
+
+    public JsonResponse<Batch> getBatch(@PathVariable("batchId") int batchId) {
+        return JsonResponse.success(batchService.getById(batchId));
+    }
 }
 

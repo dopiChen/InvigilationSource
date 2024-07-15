@@ -43,13 +43,25 @@ public class SignupController {
     //老师查询自己的报名记录
     @GetMapping("/getSignup/{username}")
     @ResponseBody
-    @ApiOperation(value = "根据用户名查询报名记录",notes = "老师端根据用户名查询报名记录")
+    @ApiOperation(value = "根据用户名查询报名记录",notes = "老师端根据用户名查询所有报名记录")
     public JsonResponse<List<Signup>> getSignup(@PathVariable("username") String username){
         QueryWrapper<Signup> queryWrapper = new QueryWrapper<>();
         queryWrapper.eq("username",username);
         List<Signup> signupList = signupService.list(queryWrapper);
         if(signupList!= null){
          return  JsonResponse.success(signupList);
+        }
+        return null;
+    }
+    @GetMapping("/getOneSignup/{username}/{examId}")
+    @ResponseBody
+    @ApiOperation(value = "根据用户名和考试编号查询报名记录",notes = "老师端根据用户名和考场编号查询某条报名记录")
+    public JsonResponse<Signup> getOneSignup(@PathVariable("username") String username,@PathVariable("examId") int examId){
+        QueryWrapper<Signup> queryWrapper = new QueryWrapper<>();
+        queryWrapper.eq("username",username).eq("exam_id",examId);
+        Signup signup = signupService.getOne(queryWrapper);
+        if(signup!= null){
+            return  JsonResponse.success(signup);
         }
         return null;
     }

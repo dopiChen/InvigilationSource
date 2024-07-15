@@ -25,4 +25,5 @@ public interface SignupService extends IService<Signup> {
 
     List<Signup> getComfirmList(String username);
 
+    List<Signup> getAllComfirms(String username);
 }

@@ -58,4 +58,9 @@
         from signup
         where username=#{username} and approval_status=5 and is_comfirm=0;
     </select>
+    <select id="getAllComfirms" resultMap="BaseResultMap">
+        select *
+        from signup
+        where username=#{username} and approval_status=5
+    </select>
 </mapper>
