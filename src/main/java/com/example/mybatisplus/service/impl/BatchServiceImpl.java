@@ -36,7 +36,7 @@ public class BatchServiceImpl extends ServiceImpl<BatchMapper, Batch> implements
     public Page<Batch> pageList(Batch batch, PageDTO dto) {
         QueryWrapper<Batch> wrapper=new QueryWrapper<>();
         if (batch != null && batch.getBatchName() != null && !batch.getBatchName().isEmpty()) {
-            wrapper.like("batchName", batch.getBatchName());
+            wrapper.like("batch_name", batch.getBatchName());
         }
         Page<Batch> page=new Page<>();
         page.setCurrent(dto.getPageNo()).setSize(dto.getPageSize());
