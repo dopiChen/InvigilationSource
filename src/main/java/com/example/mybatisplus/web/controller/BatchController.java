@@ -1,5 +1,7 @@
 package com.example.mybatisplus.web.controller;
 
+import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
+import com.example.mybatisplus.model.dto.PageDTO;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.Tag;
@@ -61,6 +63,13 @@ public class BatchController {
         List<Batch> list = batchService.searchBatch(keyword);
         if (list == null || list.isEmpty()) throw new Exception("未找到批次");
         return JsonResponse.success(list);
+    }
+
+    @GetMapping("pageList")
+    @ResponseBody
+    public JsonResponse pageList(Batch batch, PageDTO dto){
+        Page<Batch> page=batchService.pageList(batch,dto);
+        return JsonResponse.success(page);
     }
 
 }
