@@ -21,4 +21,6 @@ public interface SignupMapper extends BaseMapper<Signup> {
     List<Signup> getExamineSignUp(@Param("username") String username,@Param("usertype") int usertype);
 
     List<Signup> getFinalNameList();
+
+    List<Signup> getComfirmList(@Param("username") String username);
 }

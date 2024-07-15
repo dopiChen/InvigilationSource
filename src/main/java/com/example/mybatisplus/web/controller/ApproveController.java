@@ -14,9 +14,10 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 
-@Api(tags = "审批报名")
+@Api(tags = "领导审批报名")
 @Controller
 @RequestMapping("/batch")
 public class ApproveController {
@@ -25,7 +26,7 @@ public class ApproveController {
     @Autowired
     private UserService userService;
     //根据不同usertype获取需要审批的名单
-    @GetMapping("examine/{username}")
+    @GetMapping("/examine/{username}")
     @ResponseBody
     @ApiOperation(value = "获取需要审批的名单", notes = "根据不同usertype获取需要审批的名单")
     public JsonResponse<List<Signup>> getExamineSignUp(@PathVariable("username") String username){
@@ -37,12 +38,12 @@ public class ApproveController {
     }
 
    //同意报名
-    @PostMapping("/approve")
+    @PostMapping("/approve/{username}/{examId}")
     @ResponseBody
     @ApiOperation(value = "同意报名", notes = "领导端同意报名")
-    public JsonResponse allow(@RequestBody Signup signup){
+    public JsonResponse allow(@PathVariable("username") String username,@PathVariable("examId") int examId){
         QueryWrapper<Signup> signupQueryWrapper=new QueryWrapper<>();
-        signupQueryWrapper.eq("exam_id",signup.getExamId()).eq("username",signup.getUsername());
+        signupQueryWrapper.eq("exam_id",examId).eq("username",username);
         Signup  one= signupService.getOne(signupQueryWrapper);
         if(one!=null){
             signupService.allowSignUp(one);
@@ -52,13 +53,13 @@ public class ApproveController {
         }
     }
     //不同意报名
-     @PostMapping("/disapprove")
+     @PostMapping("/disapprove/{username}/{examId}")
      @ResponseBody
      @ApiOperation(value = "不同意报名", notes = "领导端不同意报名")
-     public JsonResponse disallow(@RequestBody Signup signup){
-        QueryWrapper<Signup> signupQueryWrapper=new QueryWrapper<>();
-        signupQueryWrapper.eq("exam_id",signup.getExamId()).eq("username",signup.getUsername());
-        Signup  one= signupService.getOne(signupQueryWrapper);
+     public JsonResponse disallow(@PathVariable("username") String username,@PathVariable("examId") int examId){
+         QueryWrapper<Signup> signupQueryWrapper=new QueryWrapper<>();
+         signupQueryWrapper.eq("exam_id",examId).eq("username",username);
+         Signup  one= signupService.getOne(signupQueryWrapper);
         if(one!=null){
             signupService.disallowSignUp(one);
             return JsonResponse.success(one);
@@ -66,4 +67,14 @@ public class ApproveController {
             return JsonResponse.failure("审批失败");
         }
      }
+
+     //根据公号查询待审批名单
+    @GetMapping("/examine/search/{username}/{usertype}/{keyword}")
+     @ResponseBody
+     @ApiOperation(value = "根据公号查询待审批名单", notes = "根据公号及其对应领导工号、等级以及搜索关键词查询待审批名单")
+     public JsonResponse<List<Signup>> searchExamineSignUp(@PathVariable("username") String username,@PathVariable("usertype") int usertype,@PathVariable("keyword") String keyword){
+        List<Signup> list=signupService.getExamineSignUp(username,usertype-1);
+        List<Signup> result=list.stream().filter(signup -> signup.getUsername().contains(keyword)).collect(Collectors.toList());
+        return JsonResponse.success(result);
+    }
 }

@@ -22,4 +22,7 @@ public interface SignupService extends IService<Signup> {
     void disallowSignUp(Signup one);
 
     List<Signup> getFinalNameList();
+
+    List<Signup> getComfirmList(String username);
+
 }

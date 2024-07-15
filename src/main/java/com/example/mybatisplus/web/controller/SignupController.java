@@ -27,7 +27,7 @@ import java.util.List;
  */
 @Controller
 @RequestMapping("/signup")
-@Api(tags = "报名")
+@Api(tags = "老师提交报名")
 public class SignupController {
 
     private final Logger logger = LoggerFactory.getLogger( SignupController.class );

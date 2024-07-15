@@ -42,10 +42,8 @@ public class Signup extends Model<Signup> {
     private String name;
     @TableField("is_out")
     private int isOut;
-    @TableField(exist = false)
-    private Personnel personnel;
-    @TableField(exist = false)
-    private Examination examination;
+    @TableField("is_comfirm")//老师是否确认
+    private int isComfirm;
     @Override
     protected Serializable pkVal() {
         return this.examId;

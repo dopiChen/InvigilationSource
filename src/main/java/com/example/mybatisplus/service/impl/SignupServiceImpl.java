@@ -46,4 +46,9 @@ public class SignupServiceImpl extends ServiceImpl<SignupMapper, Signup> impleme
     public List<Signup> getFinalNameList() {
         return signupMapper.getFinalNameList();
     }
+
+    @Override
+    public List<Signup> getComfirmList(String username) {
+        return signupMapper.getComfirmList(username);
+    }
 }

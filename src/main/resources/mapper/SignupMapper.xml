@@ -12,8 +12,9 @@
         <result column="way" property="way"/>
         <result column="name" property="name"/>
         <result column="is_out" property="isOut"/>
+        <result column="is_comfirm" property="isComfirm"/>
     </resultMap>
-    <resultMap id="NamelistMap" type="com.example.mybatisplus.model.domain.Signup">
+    <resultMap id="NamelistMap" type="com.example.mybatisplus.model.domain.FinalLiist">
         <association property="personnel" javaType="com.example.mybatisplus.model.domain.Personnel">
             <id column="username" property="username" />
             <result column="name" property="name" />
@@ -29,6 +30,7 @@
             <result column="address" property="address" />
             <result column="from_time" property="fromTime" />
             <result column="end_time" property="endTime" />
+
         </association>
     </resultMap>
 
@@ -43,12 +45,17 @@
     </select>
     <select id="getFinalNameList" resultMap="NamelistMap">
         SELECT
-               p.username AS personnel_username, p.unit AS personnel_unit, p.name AS personnel_name,p.gender AS personnel_gender,p.phone AS personnel_phone,-- 添加 personnel 表的需要显示的属性
-               e.exam_id AS examination_exam_id, e.batch_id AS examination_batch_id,e.exam_room AS examination_exam_room,e.campus AS examination_campus,
-               e.exam_address AS examination_address,e.from_time AS examination_from_time,e.end_time AS examination_end_time-- 添加 examination 表的需要显示的属性
+               p.username , p.unit , p.name ,p.gender,p.phone,-- 添加 personnel 表的需要显示的属性
+               e.exam_id, e.batch_id,e.exam_room ,e.campus ,
+               e.address ,e.from_time ,e.end_time-- 添加 examination 表的需要显示的属性
         FROM signup s
                  LEFT JOIN personnel p ON s.username = p.username
                  LEFT JOIN examination e ON s.exam_id = e.exam_id
             WHERE s.approval_status = 5
+    </select>
+    <select id="getComfirmList" resultMap="BaseResultMap">
+        select *
+        from signup
+        where username=#{username} and approval_status=5 and is_comfirm=0;
     </select>
 </mapper>
