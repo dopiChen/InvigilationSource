@@ -6,11 +6,14 @@ import com.example.mybatisplus.service.UserService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-@RestController("/positionChange")
+@Controller
+@RequestMapping("/positionChange")
 @Api(value = "职位状态变动", tags = "副院长变动教师职位和账号状态")
 public class PositionChangeController {
     @Autowired
