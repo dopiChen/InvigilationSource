@@ -7,13 +7,20 @@ import com.example.mybatisplus.model.dto.PageDTO;
 import com.example.mybatisplus.service.BatchService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
+import io.swagger.annotations.Tag;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.stereotype.Controller;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
+import com.example.mybatisplus.common.JsonResponse;
+import com.example.mybatisplus.service.BatchService;
+import com.example.mybatisplus.model.domain.Batch;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 
 /**
@@ -70,5 +77,12 @@ public class BatchController {
         return JsonResponse.success(page);
     }
 
+    @GetMapping("/getBatch/{batchId}")
+    @ResponseBody
+    @ApiOperation(value = "根据批次id查询", notes = "教师端根据批次id获取具体批次信息")
+
+    public JsonResponse<Batch> getBatch(@PathVariable("batchId") int batchId) {
+        return JsonResponse.success(batchService.getById(batchId));
+    }
 }
 

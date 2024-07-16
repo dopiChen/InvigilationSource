@@ -12,6 +12,8 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.stream.Collectors;
+
 @Controller
 @RequestMapping("/getComfirm")
 @Api(tags = "教师确认参加")
@@ -22,7 +24,7 @@ public class TeacherComfirmController {
     @GetMapping("/allNotComfirms/{username}")
     @ResponseBody
     @ApiOperation(value = "通知教师确认参加", notes = "根据老师用户名返回已经通过的审批要求确认")
-    public JsonResponse<List<Signup>> getComfirmList(String username)  {
+    public JsonResponse<List<Signup>> getComfirmList(@PathVariable("username") String username)  {
         List<Signup> list = signupService.getComfirmList(username);
         return JsonResponse.success(list);
     }
@@ -42,6 +44,23 @@ public class TeacherComfirmController {
         }
 
         throw new Exception("确认失败");
+    }
+
+    @GetMapping("/allComfirms/{username}")
+    @ResponseBody
+    @ApiOperation(value = "教师所有通过的监考记录", notes = "根据老师用户名返回所有监考记录")
+    public JsonResponse<List<Signup>> getAllComfirms(@PathVariable("username") String username){
+        List<Signup> list = signupService.getAllComfirms(username);
+        return JsonResponse.success(list);
+    }
+
+    @GetMapping("/allComfirms/search/{username}/{examId}")
+    @ResponseBody
+    @ApiOperation(value = "教师根据考试编号查询", notes = "根据考试编号返回对应通过的审批")
+    public JsonResponse<List<Signup>> searchComfirms(@PathVariable("username") String username ,@PathVariable("examId") int examId){
+        List<Signup> list = signupService.getAllComfirms(username);
+        List<Signup> result = list.stream().filter(item -> item.getExamId() == examId).collect(Collectors.toList());
+        return JsonResponse.success(result);
     }
 
 }

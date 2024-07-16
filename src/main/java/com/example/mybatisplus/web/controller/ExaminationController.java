@@ -39,12 +39,21 @@ public class ExaminationController {
     @GetMapping ("/{batch_id}")
     @ResponseBody
     @ApiOperation( value="获取指定监考批次全部考试信息", notes="老师端获取指定监考批次全部考试信息" )
-    public JsonResponse<List<Examination>> getExaminationByBatchId(@PathVariable("batch_id") String batch_id) throws Exception{
+    public JsonResponse<List<Examination>> getExaminationByBatchId(@PathVariable("batch_id") int batch_id) throws Exception{
         QueryWrapper<Examination> queryWrapper = new QueryWrapper<>();
         queryWrapper.eq("batch_id", batch_id);
         List<Examination> examinationList = examinationService.list(queryWrapper);
-        if (examinationList != null && !examinationList.isEmpty()) throw new Exception("未找到考试信息");
+        if (examinationList == null || examinationList.isEmpty()) throw new Exception("未找到考试信息");
         return JsonResponse.success( examinationList);
+    }
+
+    //获取指定id考试信息
+    @GetMapping( "/getDetail/{id}")
+    @ResponseBody
+    @ApiOperation( value="获取指定id考试信息", notes="获取指定id考试信息" )
+    public JsonResponse<Examination> getExaminationById(@PathVariable("id") int id) {
+        Examination examination = examinationService.getById(id);
+        return JsonResponse.success( examination);
     }
 
 }

@@ -38,7 +38,7 @@ public class PersonnelController {
     @GetMapping(value = "/information/{username}")
     @ResponseBody
     @ApiOperation(value = "获取用户信息", notes = "根据用户名获取用户信息")
-    public JsonResponse<Personnel> getUserInformation(@RequestParam("username") String username) throws Exception{
+    public JsonResponse<Personnel> getUserInformation(@PathVariable("username") String username) throws Exception{
         QueryWrapper<Personnel> queryWrapper=new QueryWrapper<>();
         queryWrapper.eq("username",username);
         Personnel one=personnelService.getOne(queryWrapper);
