@@ -1,5 +1,7 @@
 package com.example.mybatisplus.web.controller;
 
+import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
+import com.example.mybatisplus.model.dto.PageDTO;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.Tag;
@@ -38,8 +40,11 @@ public class BatchController {
     @GetMapping("/AllBatches")
     @ResponseBody
     @ApiOperation(value = "获取全部批次", notes = "教师端获取全部批次")
-    public JsonResponse<List<Batch>> getAllBatches() {
-        return JsonResponse.success(batchService.list());
+    public JsonResponse<List<Batch>> getAllBatches() throws Exception {
+        List<Batch> list = batchService.list();
+        if (list == null || list.isEmpty()) throw new Exception("未找到批次");
+
+        return JsonResponse.success(list);
     }
 
     //创建批次
@@ -47,6 +52,7 @@ public class BatchController {
     @ResponseBody
     @ApiOperation(value = "创建批次", notes = "科长端创建批次")
     public JsonResponse<Boolean> createBatch(@RequestBody Batch batch) {
+
         return JsonResponse.success(batchService.save(batch));
     }
 
@@ -54,10 +60,24 @@ public class BatchController {
     @GetMapping("/searchBatch/{keyword}")
     @ResponseBody
     @ApiOperation(value = "根据批次关键词查询", notes = "教师端根据批次关键词查询")
+<<<<<<< HEAD
     public JsonResponse<List<Batch>> searchBatch(@PathVariable("keyword") String keyword) {
         List<Batch> batchList=batchService.list();
         List<Batch> result=batchList.stream().filter(batch -> batch.getBatchName().contains(keyword)).collect(Collectors.toList());
         return JsonResponse.success(result);
+=======
+    public JsonResponse<List<Batch>> searchBatch(@PathVariable("keyword") String keyword) throws Exception {
+        List<Batch> list = batchService.searchBatch(keyword);
+        if (list == null || list.isEmpty()) throw new Exception("未找到批次");
+        return JsonResponse.success(list);
+    }
+
+    @GetMapping("pageList")
+    @ResponseBody
+    public JsonResponse pageList(Batch batch, PageDTO dto){
+        Page<Batch> page=batchService.pageList(batch,dto);
+        return JsonResponse.success(page);
+>>>>>>> d09df47f581ccec96f151278558416e8a2da4504
     }
 
     @GetMapping("/getBatch/{batchId}")

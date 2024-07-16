@@ -43,15 +43,20 @@ public class SignupController {
     //老师查询自己的报名记录
     @GetMapping("/getSignup/{username}")
     @ResponseBody
+<<<<<<< HEAD
     @ApiOperation(value = "根据用户名查询报名记录",notes = "老师端根据用户名查询所有报名记录")
     public JsonResponse<List<Signup>> getSignup(@PathVariable("username") String username){
+=======
+    @ApiOperation(value = "根据用户名查询报名记录",notes = "老师端根据用户名查询报名记录")
+    public JsonResponse<List<Signup>> getSignup(@PathVariable("username") String username) throws Exception{
+>>>>>>> d09df47f581ccec96f151278558416e8a2da4504
         QueryWrapper<Signup> queryWrapper = new QueryWrapper<>();
         queryWrapper.eq("username",username);
         List<Signup> signupList = signupService.list(queryWrapper);
         if(signupList!= null){
          return  JsonResponse.success(signupList);
         }
-        return null;
+        throw new Exception("未找到记录");
     }
     @GetMapping("/getOneSignup/{username}/{examId}")
     @ResponseBody
@@ -69,26 +74,26 @@ public class SignupController {
      @PostMapping("/addSignup")
      @ResponseBody
      @ApiOperation(value = "自主报名审批",notes = "老师端自己报名提交审批")
-     public JsonResponse<String> addSignup(@RequestBody Signup signup){
+     public JsonResponse<String> addSignup(@RequestBody Signup signup) throws Exception{
         if (signup!= null){
             signupService.save(signup);
             return JsonResponse.success("报名成功");
         }
         else
         {
-            return JsonResponse.failure("报名失败");
+            throw new Exception("报名失败");
         }
      }
      //领导邀请老师进行报名
      @PostMapping("/addSignupByLeader")
      @ResponseBody
      @ApiOperation(value = "邀请报名审批",notes = "领导端邀请老师进行报名")
-     public JsonResponse<String> addSignupByLeader(@RequestBody Signup signup) {
+     public JsonResponse<String> addSignupByLeader(@RequestBody Signup signup) throws Exception {
          if (signup != null) {
              signupService.save(signup);
              return JsonResponse.success("报名成功");
          } else {
-             return JsonResponse.failure("报名失败");
+             throw new Exception("报名失败");
          }
      }
 }

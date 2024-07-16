@@ -25,56 +25,59 @@ public class ApproveController {
     private SignupServiceImpl signupService;
     @Autowired
     private UserService userService;
+
     //根据不同usertype获取需要审批的名单
     @GetMapping("/examine/{username}")
     @ResponseBody
     @ApiOperation(value = "获取需要审批的名单", notes = "根据不同usertype获取需要审批的名单")
-    public JsonResponse<List<Signup>> getExamineSignUp(@PathVariable("username") String username){
-        QueryWrapper<User> queryWrapper=new QueryWrapper<>();
-        queryWrapper.eq("username",username);
-        User user=userService.getOne(queryWrapper);
-        int usertype=user.getUsertype();
-        return JsonResponse.success(signupService.getExamineSignUp(username,usertype-1));
+    public JsonResponse<List<Signup>> getExamineSignUp(@PathVariable("username") String username) {
+        QueryWrapper<User> queryWrapper = new QueryWrapper<>();
+        queryWrapper.eq("username", username);
+        User user = userService.getOne(queryWrapper);
+        int usertype = user.getUsertype();
+        return JsonResponse.success(signupService.getExamineSignUp(username, usertype - 1));
     }
 
-   //同意报名
+    //同意报名
     @PostMapping("/approve/{username}/{examId}")
     @ResponseBody
     @ApiOperation(value = "同意报名", notes = "领导端同意报名")
-    public JsonResponse allow(@PathVariable("username") String username,@PathVariable("examId") int examId){
-        QueryWrapper<Signup> signupQueryWrapper=new QueryWrapper<>();
-        signupQueryWrapper.eq("exam_id",examId).eq("username",username);
-        Signup  one= signupService.getOne(signupQueryWrapper);
-        if(one!=null){
+    public JsonResponse allow(@PathVariable("username") String username, @PathVariable("examId") int examId) throws Exception {
+        QueryWrapper<Signup> signupQueryWrapper = new QueryWrapper<>();
+        signupQueryWrapper.eq("exam_id", examId).eq("username", username);
+        Signup one = signupService.getOne(signupQueryWrapper);
+        if (one != null) {
             signupService.allowSignUp(one);
             return JsonResponse.success(one);
-        }else{
-            return JsonResponse.failure("审批失败");
+        } else {
+            throw new Exception("审批失败");
         }
     }
+
     //不同意报名
-     @PostMapping("/disapprove/{username}/{examId}")
-     @ResponseBody
-     @ApiOperation(value = "不同意报名", notes = "领导端不同意报名")
-     public JsonResponse disallow(@PathVariable("username") String username,@PathVariable("examId") int examId){
-         QueryWrapper<Signup> signupQueryWrapper=new QueryWrapper<>();
-         signupQueryWrapper.eq("exam_id",examId).eq("username",username);
-         Signup  one= signupService.getOne(signupQueryWrapper);
-        if(one!=null){
+    @PostMapping("/disapprove/{username}/{examId}")
+    @ResponseBody
+    @ApiOperation(value = "不同意报名", notes = "领导端不同意报名")
+    public JsonResponse disallow(@PathVariable("username") String username, @PathVariable("examId") int examId) throws Exception {
+        QueryWrapper<Signup> signupQueryWrapper = new QueryWrapper<>();
+        signupQueryWrapper.eq("exam_id", examId).eq("username", username);
+        Signup one = signupService.getOne(signupQueryWrapper);
+        if (one != null) {
             signupService.disallowSignUp(one);
             return JsonResponse.success(one);
-        }else{
-            return JsonResponse.failure("审批失败");
+        } else {
+            throw new Exception("审批失败");
         }
-     }
+    }
 
-     //根据公号查询待审批名单
+    //根据公号查询待审批名单
     @GetMapping("/examine/search/{username}/{usertype}/{keyword}")
-     @ResponseBody
-     @ApiOperation(value = "根据公号查询待审批名单", notes = "根据公号及其对应领导工号、等级以及搜索关键词查询待审批名单")
-     public JsonResponse<List<Signup>> searchExamineSignUp(@PathVariable("username") String username,@PathVariable("usertype") int usertype,@PathVariable("keyword") String keyword){
-        List<Signup> list=signupService.getExamineSignUp(username,usertype-1);
-        List<Signup> result=list.stream().filter(signup -> signup.getUsername().contains(keyword)).collect(Collectors.toList());
+    @ResponseBody
+    @ApiOperation(value = "根据公号查询待审批名单", notes = "根据公号及其对应领导工号、等级以及搜索关键词查询待审批名单")
+    public JsonResponse<List<Signup>> searchExamineSignUp(@PathVariable("username") String username, @PathVariable("usertype") int usertype, @PathVariable("keyword") String keyword) throws Exception {
+        List<Signup> list = signupService.getExamineSignUp(username, usertype - 1);
+        if (list == null || list.isEmpty()) throw new Exception("未找到待审批名单");
+        List<Signup> result = list.stream().filter(signup -> signup.getUsername().contains(keyword)).collect(Collectors.toList());
         return JsonResponse.success(result);
     }
 }

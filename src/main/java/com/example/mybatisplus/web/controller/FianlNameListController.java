@@ -26,15 +26,18 @@ public class FianlNameListController {
     @GetMapping()
     @ResponseBody
     @ApiOperation(value = "获取最终监考名单", notes = "主任端获取最终监考名单")
-    public JsonResponse<List<Signup>> getFinalNameList() {
-        return JsonResponse.success(signupService.getFinalNameList());
+    public JsonResponse<List<Signup>> getFinalNameList() throws Exception {
+        List<Signup> list = signupService.getFinalNameList();
+        if (list == null || list.isEmpty()) throw new Exception("未找到监名单考");
+        return JsonResponse.success(list);
     }
     //根据教师工号关键词搜索名单
     @GetMapping("/search/{keyword}")
     @ResponseBody
     @ApiOperation(value = "根据教师工号关键词搜索名单", notes = "主任端根据教师工号关键词搜索名单")
-    public JsonResponse<List<Signup>> searchFinalNameList(String keyword) {
+    public JsonResponse<List<Signup>> searchFinalNameList(String keyword) throws Exception {
         List<Signup> list = signupService.getFinalNameList();
+        if (list==null || list.isEmpty()) throw new Exception("未找到监名单考");
         List<Signup> result=list.stream().filter(signup -> signup.getUsername().contains(keyword)).collect(Collectors.toList());
         return JsonResponse.success(result);
     }

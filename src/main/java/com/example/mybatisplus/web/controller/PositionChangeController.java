@@ -21,25 +21,25 @@ public class PositionChangeController {
 
     @ApiOperation(value = "副院长变动教师职位", notes = "副院长端改变角色类型")
     @PostMapping("/changePosition/{username}/{usertype}")
-    public JsonResponse changePosition(@PathVariable("username") String username, @PathVariable("usertype") int usertype){
+    public JsonResponse changePosition(@PathVariable("username") String username, @PathVariable("usertype") int usertype)throws Exception{
         User one=userService.getById(username);
         if(one!=null) {
             one.setUserType(usertype);
             userService.updateById(one);
             return JsonResponse.success("修改成功");
         }
-        return JsonResponse.failure("修改失败");
+        throw new Exception("修改失败");
     }
 
     @ApiOperation(value = "副院长变动教师账号状态", notes = "副院长端改变账号状态")
     @PostMapping("/changeStatus/{username}/{status}")
-    public JsonResponse changeStatus(@PathVariable("username") String username, @PathVariable("status") boolean status){
+    public JsonResponse changeStatus(@PathVariable("username") String username, @PathVariable("status") boolean status) throws Exception{
         User one=userService.getById(username);
         if(one!=null) {
             one.setStatus(status);
             userService.updateById(one);
             return JsonResponse.success("修改成功");
         }
-        return JsonResponse.failure("修改失败");
+        throw new Exception("修改失败");
     }
 }
