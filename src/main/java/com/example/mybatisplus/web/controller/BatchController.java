@@ -1,17 +1,17 @@
 package com.example.mybatisplus.web.controller;
 
+import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
+import com.example.mybatisplus.common.JsonResponse;
+import com.example.mybatisplus.model.domain.Batch;
+import com.example.mybatisplus.model.dto.PageDTO;
+import com.example.mybatisplus.service.BatchService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
-import io.swagger.annotations.Tag;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.stereotype.Controller;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
-import com.example.mybatisplus.common.JsonResponse;
-import com.example.mybatisplus.service.BatchService;
-import com.example.mybatisplus.model.domain.Batch;
 
 import java.util.List;
 
@@ -61,6 +61,13 @@ public class BatchController {
         List<Batch> list = batchService.searchBatch(keyword);
         if (list == null || list.isEmpty()) throw new Exception("未找到批次");
         return JsonResponse.success(list);
+    }
+
+    @GetMapping("pageList")
+    @ResponseBody
+    public JsonResponse pageList(Batch batch, PageDTO dto){
+        Page<Batch> page=batchService.pageList(batch,dto);
+        return JsonResponse.success(page);
     }
 
 }

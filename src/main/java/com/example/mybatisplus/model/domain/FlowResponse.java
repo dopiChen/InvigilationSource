@@ -7,7 +7,8 @@ import lombok.Setter;
 @Data
 @Getter
 @Setter
-public class FlowItem {
+public class FlowResponse {
     private String username;
     private String name;
+    private String usertype;
 }
