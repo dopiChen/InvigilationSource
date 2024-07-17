@@ -96,5 +96,6 @@ public class SignupController {
              throw new Exception("报名失败");
          }
      }
+     //获取全部申请记录
 }
 

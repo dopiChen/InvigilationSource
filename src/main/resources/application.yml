@@ -3,7 +3,7 @@ spring:
     driver-class-name: com.mysql.cj.jdbc.Driver
     url: jdbc:mysql://127.0.0.1:3306/demo_examsystem
     username: root
-    password: lyc040629
+    password: Xzh040305
   mvc:
     format:
       date: yyyy-MM-dd
@@ -23,3 +23,14 @@ logging:
   level:
     com.example.mybatisplus.mapper: debug
 file-upload-path: ./file
+  aliyun.sms.accessKeyId=yourAccessKeyId
+  aliyun.sms.accessKeySecret=yourAccessKeySecret
+  aliyun.sms.signName=yourSignName
+  aliyun.sms.templateCode=yourTemplateCode
+
+aliyun:
+    sms:
+       accessKeyId: LTAI5tJWEQdv8GRk3zsD4SNy
+       accessKeySecret: 2cAEl5i0cWvuPLEq6XE746FIMWPaKq
+       signName: 研究生监考交互式系统
+       templateCode: SMS_469040660
