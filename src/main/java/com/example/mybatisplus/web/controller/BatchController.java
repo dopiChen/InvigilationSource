@@ -2,6 +2,12 @@ package com.example.mybatisplus.web.controller;
 
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.example.mybatisplus.model.dto.PageDTO;
+import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
+import com.example.mybatisplus.common.JsonResponse;
+import com.example.mybatisplus.model.domain.Batch;
+import com.example.mybatisplus.model.dto.DeleteDTO;
+import com.example.mybatisplus.model.dto.PageDTO;
+import com.example.mybatisplus.service.BatchService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.Tag;
@@ -10,12 +16,14 @@ import org.springframework.stereotype.Controller;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 import com.example.mybatisplus.common.JsonResponse;
 import com.example.mybatisplus.service.BatchService;
 import com.example.mybatisplus.model.domain.Batch;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 
 /**
@@ -26,7 +34,7 @@ import java.util.List;
  * @since 2024-07-12
  */
 @Api(tags = "批次管理")
-@Controller
+@RestController
 @RequestMapping("/batch")
 public class BatchController {
 
@@ -70,6 +78,25 @@ public class BatchController {
     public JsonResponse pageList(Batch batch, PageDTO dto){
         Page<Batch> page=batchService.pageList(batch,dto);
         return JsonResponse.success(page);
+    }
+
+    @GetMapping("/getBatch/{batchId}")
+    @ResponseBody
+    @ApiOperation(value = "根据批次id查询", notes = "教师端根据批次id获取具体批次信息")
+
+    public JsonResponse<Batch> getBatch(@PathVariable("batchId") int batchId) {
+        return JsonResponse.success(batchService.getById(batchId));
+    }
+    @GetMapping("/removeById")
+    @ResponseBody
+    public JsonResponse removeById(long id){
+        boolean b = batchService.removeById(id);
+        return JsonResponse.success(b);
+    }
+    @PostMapping("/removeByIds")
+    public JsonResponse removeByIds(@RequestBody DeleteDTO dto){
+        boolean b = batchService.removeByIds(dto.getIds());
+        return JsonResponse.success(b);
     }
 
 }

@@ -1,6 +1,10 @@
 package com.example.mybatisplus.web.controller;
 
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
+import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
+import com.example.mybatisplus.model.domain.Batch;
+import com.example.mybatisplus.model.dto.PageDTO;
+import com.example.mybatisplus.model.dto.UnitCountDTO;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -38,7 +42,7 @@ public class PersonnelController {
     @GetMapping(value = "/information/{username}")
     @ResponseBody
     @ApiOperation(value = "获取用户信息", notes = "根据用户名获取用户信息")
-    public JsonResponse<Personnel> getUserInformation(@RequestParam("username") String username) throws Exception{
+    public JsonResponse<Personnel> getUserInformation(@PathVariable("username") String username) throws Exception{
         QueryWrapper<Personnel> queryWrapper=new QueryWrapper<>();
         queryWrapper.eq("username",username);
         Personnel one=personnelService.getOne(queryWrapper);
@@ -55,6 +59,12 @@ public class PersonnelController {
     public JsonResponse<String> updateUserInformation(@RequestBody Personnel personnel) {
         personnelService.updateById(personnel);
         return JsonResponse.success("修改成功");
+    }
+    @GetMapping("unitList")
+    @ResponseBody
+    public JsonResponse unitList(Personnel personnel, PageDTO dto){
+        Page<UnitCountDTO> page=personnelService.unitList(personnel,dto);
+        return JsonResponse.success(page);
     }
 }
 
