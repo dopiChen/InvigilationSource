@@ -27,10 +27,4 @@ file-upload-path: ./file
   aliyun.sms.accessKeySecret=yourAccessKeySecret
   aliyun.sms.signName=yourSignName
   aliyun.sms.templateCode=yourTemplateCode
-
-aliyun:
-    sms:
-       accessKeyId: LTAI5tJWEQdv8GRk3zsD4SNy
-       accessKeySecret: 2cAEl5i0cWvuPLEq6XE746FIMWPaKq
-       signName: 研究生监考交互式系统
-       templateCode: SMS_469040660
+#// 阿里云账号密码
