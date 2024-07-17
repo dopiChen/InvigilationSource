@@ -1,5 +1,6 @@
 package com.example.mybatisplus.service;
 
+import com.example.mybatisplus.model.domain.FinalLiist;
 import com.example.mybatisplus.model.domain.Signup;
 import com.baomidou.mybatisplus.extension.service.IService;
 
@@ -15,14 +16,17 @@ import java.util.List;
  */
 public interface SignupService extends IService<Signup> {
 
-    List<Signup> getExamineSignUp(String username,int usertype);
+    List<Signup> getExamineSignUp(String username,int usertype,int pageNum);
+
+    List<Signup> getDisapprovedList(String username,int usertype,int pageNum);
 
     void allowSignUp(Signup signup);
 
-    void disallowSignUp(Signup one);
+    void disallowSignUp(Signup one,String reason);
 
-    List<Signup> getFinalNameList();
+    List<FinalLiist> getFinalNameList();
 
     List<Signup> getComfirmList(String username);
 
+    List<Signup> getAllComfirms(String username);
 }

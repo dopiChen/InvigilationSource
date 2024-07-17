@@ -4,9 +4,12 @@ import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.example.mybatisplus.common.JsonResponse;
 import com.example.mybatisplus.model.domain.Signup;
 import com.example.mybatisplus.model.domain.User;
+import com.example.mybatisplus.model.dto.ResponseWIthPageInfo;
 import com.example.mybatisplus.service.SignupService;
 import com.example.mybatisplus.service.UserService;
 import com.example.mybatisplus.service.impl.SignupServiceImpl;
+import com.github.pagehelper.PageHelper;
+import com.github.pagehelper.PageInfo;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -27,16 +30,101 @@ public class ApproveController {
     private UserService userService;
 
     //根据不同usertype获取需要审批的名单
-    @GetMapping("/examine/{username}")
+    @GetMapping("/examine/{username}/{pageNum}")
     @ResponseBody
-    @ApiOperation(value = "获取需要审批的名单", notes = "根据不同usertype获取需要审批的名单")
-    public JsonResponse<List<Signup>> getExamineSignUp(@PathVariable("username") String username) {
+    @ApiOperation(value = "获取需要审批的名单", notes = "根据不同usertype获取需要审批的名单--分页")
+    public JsonResponse<ResponseWIthPageInfo> getExamineSignUp(@PathVariable("username") String username, @PathVariable("pageNum") int pageNum) {
         QueryWrapper<User> queryWrapper = new QueryWrapper<>();
         queryWrapper.eq("username", username);
         User user = userService.getOne(queryWrapper);
         int usertype = user.getUsertype();
-        return JsonResponse.success(signupService.getExamineSignUp(username, usertype - 1));
+        PageHelper.startPage(pageNum, 2);
+        List<Signup> list = signupService.getExamineSignUp(username, usertype - 1, pageNum);
+        PageInfo<Signup> pageInfo = new PageInfo<>(list);
+        long total = pageInfo.getTotal();
+        return JsonResponse.success(ResponseWIthPageInfo.builder().data(list).total(total).build());
     }
+
+    @GetMapping("/examine/{username}/{pageNum}/{keyword}")
+    @ResponseBody
+    @ApiOperation(value = "搜索需要审批的名单", notes = "根据不同usertype获取需要审批的名单--分页")
+    public JsonResponse<ResponseWIthPageInfo> getExamineSignUpByKeyword(@PathVariable("username") String username, @PathVariable("pageNum") int pageNum, @PathVariable("keyword") String keyword) {
+        QueryWrapper<User> queryWrapper = new QueryWrapper<>();
+        queryWrapper.eq("username", username);
+        User user = userService.getOne(queryWrapper);
+        int usertype = user.getUsertype();
+        PageHelper.startPage(pageNum, 2);
+        List<Signup> list = signupService.getExamineSignUp(username, usertype - 1, pageNum);
+        List<Signup> result = list.stream().filter(signup -> signup.getUsername().contains(keyword)).collect(Collectors.toList());
+        PageInfo<Signup> pageInfo = new PageInfo<>(result);
+        long total = pageInfo.getTotal();
+        return JsonResponse.success(ResponseWIthPageInfo.builder().data(result).total(total).build());
+    }
+
+    //根据不同usertype获取已同意的名单
+    @GetMapping("/approved/{username}/{pageNum}")
+    @ResponseBody
+    @ApiOperation(value = "获取已同意的名单", notes = "根据不同usertype获取已同意的名单")
+    public JsonResponse<ResponseWIthPageInfo> getApprovedList(@PathVariable("username") String username, @PathVariable("pageNum") int pageNum) {
+        QueryWrapper<User> queryWrapper = new QueryWrapper<>();
+        queryWrapper.eq("username", username);
+        User user = userService.getOne(queryWrapper);
+        int usertype = user.getUsertype();
+        PageHelper.startPage(pageNum, 2);
+        List<Signup> list = signupService.getExamineSignUp(username, usertype, pageNum);
+        PageInfo<Signup> pageInfo = new PageInfo<>(list);
+        long total = pageInfo.getTotal();
+        return JsonResponse.success(ResponseWIthPageInfo.builder().data(list).total(total).build());
+    }
+
+    @GetMapping("/approved/{username}/{pageNum}/{keyword}")
+    @ResponseBody
+    @ApiOperation(value = "搜索已同意的名单", notes = "根据不同usertype获取已同意的名单")
+    public JsonResponse<ResponseWIthPageInfo> getApprovedListByKeyword(@PathVariable("username") String username, @PathVariable("pageNum") int pageNum, @PathVariable("keyword") String keyword) {
+        QueryWrapper<User> queryWrapper = new QueryWrapper<>();
+        queryWrapper.eq("username", username);
+        User user = userService.getOne(queryWrapper);
+        int usertype = user.getUsertype();
+        PageHelper.startPage(pageNum, 2);
+        List<Signup> list = signupService.getExamineSignUp(username, usertype, pageNum);
+        List<Signup> result = list.stream().filter(signup -> signup.getUsername().contains(keyword)).collect(Collectors.toList());
+        PageInfo<Signup> pageInfo = new PageInfo<>(result);
+        long total = pageInfo.getTotal();
+        return JsonResponse.success(ResponseWIthPageInfo.builder().data(result).total(total).build());
+    }
+
+    //根据不同usertype获取不同意的名单
+    @GetMapping("/disapproved/{username}/{pageNum}")
+    @ResponseBody
+    @ApiOperation(value = "获取不同意的名单", notes = "根据不同usertype获取不同意的名单")
+    public JsonResponse<ResponseWIthPageInfo> getDisapprovedList(@PathVariable("username") String username, @PathVariable("pageNum") int pageNum) {
+        QueryWrapper<User> queryWrapper = new QueryWrapper<>();
+        queryWrapper.eq("username", username);
+        User user = userService.getOne(queryWrapper);
+        int usertype = user.getUsertype();
+        PageHelper.startPage(pageNum, 2);
+        List<Signup> list = signupService.getDisapprovedList(username, usertype - 1, pageNum);
+        PageInfo<Signup> pageInfo = new PageInfo<>(list);
+        long total = pageInfo.getTotal();
+        return JsonResponse.success(ResponseWIthPageInfo.builder().data(list).total(total).build());
+    }
+
+    @GetMapping("/disapproved/{username}/{pageNum}/{keyword}")
+    @ResponseBody
+    @ApiOperation(value = "获取不同意的名单", notes = "根据不同usertype获取不同意的名单")
+    public JsonResponse<ResponseWIthPageInfo> getDisapprovedList(@PathVariable("username") String username, @PathVariable("pageNum") int pageNum, @PathVariable("keyword") String keyword) {
+        QueryWrapper<User> queryWrapper = new QueryWrapper<>();
+        queryWrapper.eq("username", username);
+        User user = userService.getOne(queryWrapper);
+        int usertype = user.getUsertype();
+        PageHelper.startPage(pageNum, 2);
+        List<Signup> list = signupService.getDisapprovedList(username, usertype - 1, pageNum);
+        List<Signup> result = list.stream().filter(signup -> signup.getUsername().contains(keyword)).collect(Collectors.toList());
+        PageInfo<Signup> pageInfo = new PageInfo<>(result);
+        long total = pageInfo.getTotal();
+        return JsonResponse.success(ResponseWIthPageInfo.builder().data(result).total(total).build());
+    }
+
 
     //同意报名
     @PostMapping("/approve/{username}/{examId}")
@@ -55,29 +143,18 @@ public class ApproveController {
     }
 
     //不同意报名
-    @PostMapping("/disapprove/{username}/{examId}")
+    @PostMapping("/disapprove/{username}/{examId}/{reason}")
     @ResponseBody
     @ApiOperation(value = "不同意报名", notes = "领导端不同意报名")
-    public JsonResponse disallow(@PathVariable("username") String username, @PathVariable("examId") int examId) throws Exception {
+    public JsonResponse disallow(@PathVariable("username") String username, @PathVariable("examId") int examId, @PathVariable("reason") String reason) throws Exception {
         QueryWrapper<Signup> signupQueryWrapper = new QueryWrapper<>();
         signupQueryWrapper.eq("exam_id", examId).eq("username", username);
         Signup one = signupService.getOne(signupQueryWrapper);
         if (one != null) {
-            signupService.disallowSignUp(one);
+            signupService.disallowSignUp(one, reason);
             return JsonResponse.success(one);
         } else {
             throw new Exception("审批失败");
         }
-    }
-
-    //根据公号查询待审批名单
-    @GetMapping("/examine/search/{username}/{usertype}/{keyword}")
-    @ResponseBody
-    @ApiOperation(value = "根据公号查询待审批名单", notes = "根据公号及其对应领导工号、等级以及搜索关键词查询待审批名单")
-    public JsonResponse<List<Signup>> searchExamineSignUp(@PathVariable("username") String username, @PathVariable("usertype") int usertype, @PathVariable("keyword") String keyword) throws Exception {
-        List<Signup> list = signupService.getExamineSignUp(username, usertype - 1);
-        if (list == null || list.isEmpty()) throw new Exception("未找到待审批名单");
-        List<Signup> result = list.stream().filter(signup -> signup.getUsername().contains(keyword)).collect(Collectors.toList());
-        return JsonResponse.success(result);
     }
 }

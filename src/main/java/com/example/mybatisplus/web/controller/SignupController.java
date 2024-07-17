@@ -53,6 +53,18 @@ public class SignupController {
         }
         throw new Exception("未找到记录");
     }
+    @GetMapping("/getOneSignup/{username}/{examId}")
+    @ResponseBody
+    @ApiOperation(value = "根据用户名和考试编号查询报名记录",notes = "老师端根据用户名和考场编号查询某条报名记录")
+    public JsonResponse<Signup> getOneSignup(@PathVariable("username") String username,@PathVariable("examId") int examId){
+        QueryWrapper<Signup> queryWrapper = new QueryWrapper<>();
+        queryWrapper.eq("username",username).eq("exam_id",examId);
+        Signup signup = signupService.getOne(queryWrapper);
+        if(signup!= null){
+            return  JsonResponse.success(signup);
+        }
+        return null;
+    }
     // 老师自己报名提交审批
      @PostMapping("/addSignup")
      @ResponseBody
@@ -79,5 +91,6 @@ public class SignupController {
              throw new Exception("报名失败");
          }
      }
+     //获取全部申请记录
 }
 

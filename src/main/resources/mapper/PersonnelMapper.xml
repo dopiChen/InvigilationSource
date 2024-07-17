@@ -4,15 +4,34 @@
 
     <!-- 通用查询映射结果 -->
     <resultMap id="BaseResultMap" type="com.example.mybatisplus.model.domain.Personnel">
-        <id column="username" property="username" />
-        <result column="name" property="name" />
-        <result column="unit" property="unit" />
-        <result column="gender" property="gender" />
-        <result column="edu_background" property="eduBackground" />
-        <result column="phone" property="phone" />
-        <result column="backup_phone" property="backupPhone" />
-        <result column="photo" property="photo" />
-        <result column="address" property="address" />
+        <id column="username" property="username"/>
+        <result column="name" property="name"/>
+        <result column="unit" property="unit"/>
+        <result column="gender" property="gender"/>
+        <result column="edu_background" property="eduBackground"/>
+        <result column="phone" property="phone"/>
+        <result column="backup_phone" property="backupPhone"/>
+        <result column="photo" property="photo"/>
+        <result column="address" property="address"/>
     </resultMap>
+
+    <resultMap id="FlowItemMap" type="com.example.mybatisplus.model.domain.FlowItem">
+        <association property="personnel" javaType="com.example.mybatisplus.model.domain.Personnel">
+            <id column="username" property="username"/>
+            <result column="name" property="name"/>
+        </association>
+        <association property="user" javaType="com.example.mybatisplus.model.domain.User">
+            <id column="username" property="username"/>
+            <result column="usertype" property="usertype"/>
+        </association>
+    </resultMap>
+
+    <select id="getFlowList" resultMap="FlowItemMap">
+        SELECT p.username, p.name, u.usertype
+        FROM personnel p
+                 JOIN user u ON p.username = u.username
+        WHERE p.unit = #{unit}
+          AND u.usertype != 1
+    </select>
 
 </mapper>
