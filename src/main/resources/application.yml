@@ -27,4 +27,4 @@ file-upload-path: ./file
   aliyun.sms.accessKeySecret=yourAccessKeySecret
   aliyun.sms.signName=yourSignName
   aliyun.sms.templateCode=yourTemplateCode
-#// 阿里云账号密码
+#// 阿里云账号密
