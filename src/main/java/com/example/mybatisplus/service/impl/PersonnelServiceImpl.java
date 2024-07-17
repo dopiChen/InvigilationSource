@@ -1,14 +1,19 @@
 package com.example.mybatisplus.service.impl;
 
+import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
+import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.example.mybatisplus.model.domain.FlowResponse;
 import com.example.mybatisplus.model.domain.Personnel;
 import com.example.mybatisplus.mapper.PersonnelMapper;
+import com.example.mybatisplus.model.dto.PageDTO;
+import com.example.mybatisplus.model.dto.UnitCountDTO;
 import com.example.mybatisplus.service.PersonnelService;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 /**
  * <p>
@@ -26,4 +31,24 @@ public class PersonnelServiceImpl extends ServiceImpl<PersonnelMapper, Personnel
     public List<FlowResponse> getFlowList(String unit){
         return personnelMapper.getFlowList(unit);
     }
+
+    @Override
+    public Page<UnitCountDTO> unitList(Personnel personnel, PageDTO dto) {
+        QueryWrapper<Personnel> wrapper = new QueryWrapper<>();
+        wrapper.select("unit", "COUNT(DISTINCT username) AS count")
+                .groupBy("unit");
+        Page<UnitCountDTO> page = new Page<>(dto.getPageNo(), dto.getPageSize());
+        List<UnitCountDTO> records = baseMapper.selectMaps(wrapper)
+                .stream()
+                .map(map -> {
+                    UnitCountDTO dto1 = new UnitCountDTO();
+                    dto1.setUnit((String) map.get("unit"));
+                    dto1.setCount(((Long) map.get("count")).intValue());
+                    return dto1;
+                }).collect(Collectors.toList());
+        page.setRecords(records);
+        return page;
+    }
+
+
 }

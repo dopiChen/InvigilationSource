@@ -56,4 +56,6 @@ public class SignupServiceImpl extends ServiceImpl<SignupMapper, Signup> impleme
     public List<Signup> getAllComfirms(String username) {
         return signupMapper.getAllComfirms(username);
     }
+
+
 }
