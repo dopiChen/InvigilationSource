@@ -43,13 +43,8 @@ public class SignupController {
     //老师查询自己的报名记录
     @GetMapping("/getSignup/{username}")
     @ResponseBody
-<<<<<<< HEAD
     @ApiOperation(value = "根据用户名查询报名记录",notes = "老师端根据用户名查询所有报名记录")
-    public JsonResponse<List<Signup>> getSignup(@PathVariable("username") String username){
-=======
-    @ApiOperation(value = "根据用户名查询报名记录",notes = "老师端根据用户名查询报名记录")
     public JsonResponse<List<Signup>> getSignup(@PathVariable("username") String username) throws Exception{
->>>>>>> d09df47f581ccec96f151278558416e8a2da4504
         QueryWrapper<Signup> queryWrapper = new QueryWrapper<>();
         queryWrapper.eq("username",username);
         List<Signup> signupList = signupService.list(queryWrapper);

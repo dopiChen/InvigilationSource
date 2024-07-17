@@ -23,8 +23,4 @@ logging:
   level:
     com.example.mybatisplus.mapper: debug
 file-upload-path: ./file
-  aliyun.sms.accessKeyId=yourAccessKeyId
-  aliyun.sms.accessKeySecret=yourAccessKeySecret
-  aliyun.sms.signName=yourSignName
-  aliyun.sms.templateCode=yourTemplateCode
-#// 阿里云账号密
+#阿里云api密钥
