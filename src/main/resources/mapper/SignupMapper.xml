@@ -40,7 +40,16 @@
                  JOIN personnel p_user ON s.username = p_user.username
         WHERE p_user.username IN (SELECT username
                                   FROM personnel
-                                  WHERE unit = (SELECT unit FROM personnel WHERE username = #{username}))
+                                  WHERE s.is_out = 0 AND unit = (SELECT unit FROM personnel WHERE username = #{username}))
+          AND s.approval_status = #{usertype}
+    </select>
+    <select id="getDisapprovedList" resultMap="BaseResultMap">
+        SELECT s.*
+        FROM signup s
+                 JOIN personnel p_user ON s.username = p_user.username
+        WHERE p_user.username IN (SELECT username
+                                  FROM personnel
+                                  WHERE s.is_out = 1 AND unit = (SELECT unit FROM personnel WHERE username = #{username}))
           AND s.approval_status = #{usertype}
     </select>
     <select id="getFinalNameList" resultMap="NamelistMap">
