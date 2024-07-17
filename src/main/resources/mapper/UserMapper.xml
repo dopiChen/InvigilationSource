@@ -11,5 +11,10 @@
         <result column="is_deleted" property="isDeleted" />
         <result column="is_enable" property="isEnabled" />
     </resultMap>
-
+    <select id="findByPhone" resultType="com.example.mybatisplus.model.domain.User">
+        SELECT u.*
+        FROM user u
+                 JOIN personnel p ON u.username = p.username
+        WHERE p.phone = #{phone}
+    </select>
 </mapper>

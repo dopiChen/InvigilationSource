@@ -31,4 +31,9 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements Us
 //        }
         return one;
     }
+
+    @Override
+    public User findByPhone(String phone) {
+        return userMapper.findByPhone( phone);
+    }
 }

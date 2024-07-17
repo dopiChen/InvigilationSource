@@ -3,8 +3,11 @@ package com.example.mybatisplus.web.controller;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.core.conditions.update.UpdateWrapper;
 import com.example.mybatisplus.common.JsonResponse;
+import com.example.mybatisplus.model.domain.Batch;
 import com.example.mybatisplus.model.domain.Signup;
 import com.example.mybatisplus.service.SignupService;
+import com.github.pagehelper.PageHelper;
+import com.github.pagehelper.PageInfo;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -49,18 +52,23 @@ public class TeacherComfirmController {
     @GetMapping("/allComfirms/{username}")
     @ResponseBody
     @ApiOperation(value = "教师所有通过的监考记录", notes = "根据老师用户名返回所有监考记录")
-    public JsonResponse<List<Signup>> getAllComfirms(@PathVariable("username") String username){
+    public JsonResponse<List<Signup>> getAllComfirms( @RequestParam(defaultValue = "1") int page, @RequestParam(defaultValue = "10") int size,@PathVariable("username") String username){
+        PageHelper.startPage(page, size);
         List<Signup> list = signupService.getAllComfirms(username);
-        return JsonResponse.success(list);
+        PageInfo<Signup> pageInfo = new PageInfo<>(list);
+        return JsonResponse.success(pageInfo.getList());
     }
 
     @GetMapping("/allComfirms/search/{username}/{examId}")
     @ResponseBody
     @ApiOperation(value = "教师根据考试编号查询", notes = "根据考试编号返回对应通过的审批")
-    public JsonResponse<List<Signup>> searchComfirms(@PathVariable("username") String username ,@PathVariable("examId") int examId){
+    public JsonResponse<List<Signup>> searchComfirms(@PathVariable("username") String username ,@PathVariable("examId") int examId,
+                                                     @RequestParam(defaultValue = "1") int page, @RequestParam(defaultValue = "10") int size){
+        PageHelper.startPage(page, size);
         List<Signup> list = signupService.getAllComfirms(username);
         List<Signup> result = list.stream().filter(item -> item.getExamId() == examId).collect(Collectors.toList());
-        return JsonResponse.success(result);
+        PageInfo<Signup> pageInfo = new PageInfo<>(result);
+        return JsonResponse.success(pageInfo.getList());
     }
 
 }
