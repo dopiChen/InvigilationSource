@@ -5,6 +5,7 @@ import com.example.mybatisplus.model.dto.PageDTO;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.example.mybatisplus.common.JsonResponse;
 import com.example.mybatisplus.model.domain.Batch;
+import com.example.mybatisplus.model.dto.DeleteDTO;
 import com.example.mybatisplus.model.dto.PageDTO;
 import com.example.mybatisplus.service.BatchService;
 import com.github.pagehelper.PageHelper;
@@ -35,7 +36,7 @@ import java.util.stream.Collectors;
  * @since 2024-07-12
  */
 @Api(tags = "批次管理")
-@Controller
+@RestController
 @RequestMapping("/batch")
 public class BatchController {
 
@@ -92,5 +93,17 @@ public class BatchController {
     public JsonResponse<Batch> getBatch(@PathVariable("batchId") int batchId) {
         return JsonResponse.success(batchService.getById(batchId));
     }
+    @GetMapping("/removeById")
+    @ResponseBody
+    public JsonResponse removeById(long id){
+        boolean b = batchService.removeById(id);
+        return JsonResponse.success(b);
+    }
+    @PostMapping("/removeByIds")
+    public JsonResponse removeByIds(@RequestBody DeleteDTO dto){
+        boolean b = batchService.removeByIds(dto.getIds());
+        return JsonResponse.success(b);
+    }
+
 }
 
