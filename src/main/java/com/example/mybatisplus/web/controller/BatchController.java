@@ -80,6 +80,13 @@ public class BatchController {
         return JsonResponse.success(page);
     }
 
+    @GetMapping("pageList")
+    @ResponseBody
+    public JsonResponse pageList(Batch batch, PageDTO dto){
+        Page<Batch> page=batchService.pageList(batch,dto);
+        return JsonResponse.success(page);
+    }
+
     @GetMapping("/getBatch/{batchId}")
     @ResponseBody
     @ApiOperation(value = "根据批次id查询", notes = "教师端根据批次id获取具体批次信息")
