@@ -32,20 +32,24 @@ public class SignupServiceImpl extends ServiceImpl<SignupMapper, Signup> impleme
     private SignupMapper signupMapper;
 
     @Override
-    public List<Signup> getExamineSignUp(String username, int usertype,int pageNum) {
-        PageHelper.startPage(pageNum,2);
+    public List<Signup> getExamineSignUp(String username, int usertype) {
         return signupMapper.getExamineSignUp(username, usertype);
     }
 
     @Override
-    public List<Signup> getDisapprovedList(String username, int usertype,int pageNum) {
-        PageHelper.startPage(pageNum,2);
-        List<Signup> list = signupMapper.getDisapprovedList(username,usertype);
-        PageInfo<Signup> pageInfo = new PageInfo<>(list);
-        long total = pageInfo.getPages();
-
-        return signupMapper.getDisapprovedList(username,usertype);
+    public List<Signup> getExamineSignUpByKeyword(String username, int usertype, String keyword) {
+        return signupMapper.getExamineSignUpByKeyword(username, usertype, keyword);
     }
+
+    @Override
+    public List<Signup> getDisapprovedList(String username, int usertype) {
+        return signupMapper.getDisapprovedList(username, usertype);
+    }
+
+    public List<Signup> getDisapprovedListByKeyword(String username, int usertype,String keyword) {
+        return signupMapper.getDisapprovedListByKeyword(username, usertype,keyword);
+    }
+
 
     @Override
     public void allowSignUp(Signup signup) {
@@ -69,6 +73,11 @@ public class SignupServiceImpl extends ServiceImpl<SignupMapper, Signup> impleme
     }
 
     @Override
+    public List<FinalLiist> getFinalNameListByKeyword(String keyword) {
+        return signupMapper.getFinalNameListByKeyword(keyword);
+    }
+
+    @Override
     public List<Signup> getComfirmList(String username) {
         return signupMapper.getComfirmList(username);
     }
@@ -80,21 +89,21 @@ public class SignupServiceImpl extends ServiceImpl<SignupMapper, Signup> impleme
 
     @Override
     public Page<Signup> allComfirmPageList(String username, Signup signup, PageDTO pageDTO) {
-        QueryWrapper<Signup> wrapper=new QueryWrapper<>();
+        QueryWrapper<Signup> wrapper = new QueryWrapper<>();
         wrapper.eq("approval_status", 5).eq("username", username);
-        Page<Signup> page=new Page<>();
+        Page<Signup> page = new Page<>();
         page.setCurrent(pageDTO.getPageNo()).setSize(pageDTO.getPageSize());
-        baseMapper.selectPage(page,wrapper);
+        baseMapper.selectPage(page, wrapper);
         return page;
     }
 
     @Override
     public Page<Signup> searchAllComfirmPageList(String username, int examId, PageDTO pageDTO) {
-        QueryWrapper<Signup> wrapper=new QueryWrapper<>();
-        wrapper.eq("approval_status", 5).eq("username", username).eq("exam_id",examId);
-        Page<Signup> page=new Page<>();
+        QueryWrapper<Signup> wrapper = new QueryWrapper<>();
+        wrapper.eq("approval_status", 5).eq("username", username).eq("exam_id", examId);
+        Page<Signup> page = new Page<>();
         page.setCurrent(pageDTO.getPageNo()).setSize(pageDTO.getPageSize());
-        baseMapper.selectPage(page,wrapper);
+        baseMapper.selectPage(page, wrapper);
         return page;
     }
 

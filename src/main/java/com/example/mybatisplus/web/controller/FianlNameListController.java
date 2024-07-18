@@ -28,11 +28,11 @@ public class FianlNameListController {
     private SignupService signupService;
 
     //领导端获取最终监考名单
-    @GetMapping("/{pageNum}")
+    @GetMapping("/{pageSize}/{pageNum}")
     @ResponseBody
     @ApiOperation(value = "获取最终监考名单", notes = "主任端获取最终监考名单")
-    public JsonResponse<ResponseWIthPageInfo> getFinalNameList(@PathVariable("pageNum") int pageNum) throws Exception {
-        PageHelper.startPage(pageNum, 2);
+    public JsonResponse<ResponseWIthPageInfo> getFinalNameList(@PathVariable("pageNum") int pageNum,@PathVariable("pageSize") int pageSize) throws Exception {
+        PageHelper.startPage(pageNum, pageSize);
         List<FinalLiist> list = signupService.getFinalNameList();
         if (list == null || list.isEmpty()) throw new Exception("未找到监名单考");
         PageInfo<FinalLiist> pageInfo = new PageInfo<>(list);
@@ -41,17 +41,16 @@ public class FianlNameListController {
     }
 
     //根据教师工号关键词搜索名单
-    @GetMapping("/search/{keyword}/{pageNum}")
+    @GetMapping("/search/{keyword}/{pageSize}/{pageNum}")
     @ResponseBody
     @ApiOperation(value = "根据教师工号关键词搜索名单", notes = "主任端根据教师工号关键词搜索名单")
-    public JsonResponse<ResponseWIthPageInfo> searchFinalNameList(@PathVariable("keyword") String keyword, @PathVariable("pageNum") int pageNum) throws Exception {
-        List<FinalLiist> list = signupService.getFinalNameList();
+    public JsonResponse<ResponseWIthPageInfo> searchFinalNameList(@PathVariable("keyword") String keyword, @PathVariable("pageNum") int pageNum, @PathVariable("pageSize") int pageSize) throws Exception {
+        PageHelper.startPage(pageNum, pageSize);
+        List<FinalLiist> list = signupService.getFinalNameListByKeyword(keyword);
         if (list == null || list.isEmpty()) throw new Exception("未找到监名单考");
-        PageHelper.startPage(pageNum, 2);
-        List<FinalLiist> result = list.stream().filter(finalItem -> finalItem.getPersonnel().getUsername().contains(keyword)).collect(Collectors.toList());
-        PageInfo<FinalLiist> pageInfo = new PageInfo<>(result);
+        PageInfo<FinalLiist> pageInfo = new PageInfo<>(list);
         long total = pageInfo.getTotal();
-        return JsonResponse.success(ResponseWIthPageInfo.builder().data(result).total(total).build());
+        return JsonResponse.success(ResponseWIthPageInfo.builder().data(list).total(total).build());
     }
 
 }
