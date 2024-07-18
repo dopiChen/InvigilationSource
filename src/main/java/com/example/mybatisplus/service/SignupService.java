@@ -18,15 +18,19 @@ import java.util.List;
  */
 public interface SignupService extends IService<Signup> {
 
-    List<Signup> getExamineSignUp(String username,int usertype,int pageNum);
+    List<Signup> getExamineSignUp(String username,int usertype);
 
-    List<Signup> getDisapprovedList(String username,int usertype,int pageNum);
+    List<Signup> getExamineSignUpByKeyword(String username, int usertype,String keyword);
+
+    List<Signup> getDisapprovedList(String username,int usertype);
 
     void allowSignUp(Signup signup);
 
     void disallowSignUp(Signup one,String reason);
 
     List<FinalLiist> getFinalNameList();
+
+    List<FinalLiist> getFinalNameListByKeyword(String keyword);
 
     List<Signup> getComfirmList(String username);
 

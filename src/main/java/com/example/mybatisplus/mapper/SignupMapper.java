@@ -10,7 +10,7 @@ import java.util.List;
 
 /**
  * <p>
- *  Mapper 接口
+ * Mapper 接口
  * </p>
  *
  * @author clt
@@ -19,11 +19,17 @@ import java.util.List;
 @Mapper
 public interface SignupMapper extends BaseMapper<Signup> {
 
-    List<Signup> getExamineSignUp(@Param("username") String username,@Param("usertype") int usertype);
+    List<Signup> getExamineSignUp(@Param("username") String username, @Param("usertype") int usertype);
 
-    List<Signup> getDisapprovedList(@Param("username") String username,@Param("usertype") int usertype);
+    List<Signup> getExamineSignUpByKeyword(@Param("username") String username, @Param("usertype") int usertype, @Param("keyword") String keyword);
+
+    List<Signup> getDisapprovedList(@Param("username") String username, @Param("usertype") int usertype);
+
+    List<Signup> getDisapprovedListByKeyword(@Param("username") String username, @Param("usertype") int usertype, @Param("keyword") String keyword);
 
     List<FinalLiist> getFinalNameList();
+
+    List<FinalLiist> getFinalNameListByKeyword(@Param("keyword") String keyword);
 
     List<Signup> getComfirmList(@Param("username") String username);
 
