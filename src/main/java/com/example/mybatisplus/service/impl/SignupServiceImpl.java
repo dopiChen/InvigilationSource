@@ -1,9 +1,13 @@
 package com.example.mybatisplus.service.impl;
 
+import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.core.conditions.update.UpdateWrapper;
+import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
+import com.example.mybatisplus.model.domain.Batch;
 import com.example.mybatisplus.model.domain.FinalLiist;
 import com.example.mybatisplus.model.domain.Signup;
 import com.example.mybatisplus.mapper.SignupMapper;
+import com.example.mybatisplus.model.dto.PageDTO;
 import com.example.mybatisplus.service.SignupService;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.github.pagehelper.PageHelper;
@@ -72,6 +76,26 @@ public class SignupServiceImpl extends ServiceImpl<SignupMapper, Signup> impleme
     @Override
     public List<Signup> getAllComfirms(String username) {
         return signupMapper.getAllComfirms(username);
+    }
+
+    @Override
+    public Page<Signup> allComfirmPageList(String username, Signup signup, PageDTO pageDTO) {
+        QueryWrapper<Signup> wrapper=new QueryWrapper<>();
+        wrapper.eq("approval_status", 5).eq("username", username);
+        Page<Signup> page=new Page<>();
+        page.setCurrent(pageDTO.getPageNo()).setSize(pageDTO.getPageSize());
+        baseMapper.selectPage(page,wrapper);
+        return page;
+    }
+
+    @Override
+    public Page<Signup> searchAllComfirmPageList(String username, int examId, PageDTO pageDTO) {
+        QueryWrapper<Signup> wrapper=new QueryWrapper<>();
+        wrapper.eq("approval_status", 5).eq("username", username).eq("exam_id",examId);
+        Page<Signup> page=new Page<>();
+        page.setCurrent(pageDTO.getPageNo()).setSize(pageDTO.getPageSize());
+        baseMapper.selectPage(page,wrapper);
+        return page;
     }
 
 

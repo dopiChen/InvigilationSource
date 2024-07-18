@@ -1,8 +1,10 @@
 package com.example.mybatisplus.service;
 
+import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.example.mybatisplus.model.domain.FinalLiist;
 import com.example.mybatisplus.model.domain.Signup;
 import com.baomidou.mybatisplus.extension.service.IService;
+import com.example.mybatisplus.model.dto.PageDTO;
 
 import java.util.List;
 
@@ -29,4 +31,8 @@ public interface SignupService extends IService<Signup> {
     List<Signup> getComfirmList(String username);
 
     List<Signup> getAllComfirms(String username);
+
+    Page<Signup> allComfirmPageList(String username, Signup signup, PageDTO pageDTO);
+
+    Page<Signup> searchAllComfirmPageList(String username, int examId, PageDTO pageDTO);
 }

@@ -2,8 +2,11 @@ package com.example.mybatisplus.web.controller;
 
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.core.conditions.update.UpdateWrapper;
+import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.example.mybatisplus.common.JsonResponse;
+import com.example.mybatisplus.model.domain.Batch;
 import com.example.mybatisplus.model.domain.Signup;
+import com.example.mybatisplus.model.dto.PageDTO;
 import com.example.mybatisplus.service.SignupService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
@@ -45,22 +48,31 @@ public class TeacherComfirmController {
 
         throw new Exception("确认失败");
     }
-
-    @GetMapping("/allComfirms/{username}")
-    @ResponseBody
-    @ApiOperation(value = "教师所有通过的监考记录", notes = "根据老师用户名返回所有监考记录")
-    public JsonResponse<List<Signup>> getAllComfirms(@PathVariable("username") String username){
-        List<Signup> list = signupService.getAllComfirms(username);
-        return JsonResponse.success(list);
-    }
-
-    @GetMapping("/allComfirms/search/{username}/{examId}")
+    //分叶查询
+    @PostMapping("/allComfirms/search/{username}/{examId}")
     @ResponseBody
     @ApiOperation(value = "教师根据考试编号查询", notes = "根据考试编号返回对应通过的审批")
-    public JsonResponse<List<Signup>> searchComfirms(@PathVariable("username") String username ,@PathVariable("examId") int examId){
-        List<Signup> list = signupService.getAllComfirms(username);
-        List<Signup> result = list.stream().filter(item -> item.getExamId() == examId).collect(Collectors.toList());
-        return JsonResponse.success(result);
+    public JsonResponse searchComfirms(@PathVariable("username") String username ,@PathVariable("examId") int examId,PageDTO pageDTO){
+        Page<Signup> page=signupService.searchAllComfirmPageList(username, examId,pageDTO);
+        if (page != null){
+            return JsonResponse.success(page);
+        }
+        else {
+            return JsonResponse.failure("查询结果为空");
+        }
+    }
+    //分页展示
+    @PostMapping("/allComfirms/{username}")
+    @ResponseBody
+    @ApiOperation(value = "教师所有通过的监考记录", notes = "根据老师用户名返回所有监考记录")
+    public JsonResponse getAllComfirms(@PathVariable("username") String username, PageDTO pageDTO,Signup signup ){
+        Page<Signup> page=signupService.allComfirmPageList(username,signup,pageDTO);
+        if (page != null){
+        return JsonResponse.success(page);
+        }
+        else {
+            return JsonResponse.failure("查询结果为空");
+        }
     }
 
 }
