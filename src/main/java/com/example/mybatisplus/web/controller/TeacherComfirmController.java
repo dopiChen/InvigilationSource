@@ -27,7 +27,7 @@ public class TeacherComfirmController {
     @GetMapping("/allNotComfirms/{username}")
     @ResponseBody
     @ApiOperation(value = "通知教师确认参加", notes = "根据老师用户名返回已经通过的审批要求确认")
-    public JsonResponse<List<Signup>> getComfirmList(String username)  {
+    public JsonResponse<List<Signup>> getComfirmList(@PathVariable("username") String username)  {
         List<Signup> list = signupService.getComfirmList(username);
         return JsonResponse.success(list);
     }

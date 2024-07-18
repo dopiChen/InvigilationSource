@@ -7,10 +7,15 @@ spring:
   mvc:
     format:
       date: yyyy-MM-dd
+
+
   servlet:
     multipart:
       max-file-size: 100MB
       max-request-size: 100MB
+  web:
+    resources:
+      static-locations:  classpath:/META-INF/resources/, classpath:/resources/, classpath:/static/, classpath:/public/, file:${file-upload-path}
 server:
   servlet:
     encoding:
@@ -30,3 +35,4 @@ aliyun:
     accessKeySecret: 2cAEl5i0cWvuPLEq6XE746FIMWPaKq
     signName: 研究生监考交互式系统
     templateCode: SMS_469040660
+

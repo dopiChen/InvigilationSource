@@ -133,8 +133,14 @@ public class UserController {
         // 生成六位数验证码
         return String.valueOf((int) ((Math.random() * 9 + 1) * 100000));
     }
-
-
+    //清除用户数据
+    @GetMapping("/whitelistSetting/logout")
+    @ResponseBody
+    @ApiOperation(value = "退出登录", notes = "退出登录清除后端Seccession数据")
+    public JsonResponse logout() {
+        SessionUtils.clearCurUser();
+        return JsonResponse.success("退出成功！");
+    }
 
 }
 
