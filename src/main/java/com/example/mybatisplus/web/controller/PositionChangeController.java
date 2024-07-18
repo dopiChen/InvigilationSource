@@ -12,7 +12,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-@Controller
+@RestController
 @RequestMapping("/positionChange")
 @Api(value = "职位状态变动", tags = "副院长变动教师职位和账号状态")
 public class PositionChangeController {

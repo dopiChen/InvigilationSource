@@ -9,7 +9,7 @@
         <result column="name" property="name" />
         <result column="usertype" property="usertype" />
         <result column="is_deleted" property="isDeleted" />
-        <result column="is_enable" property="isEnabled" />
+        <result column="is_enabled" property="isEnabled" />
     </resultMap>
     <select id="findByPhone" resultType="com.example.mybatisplus.model.domain.User">
         SELECT u.*

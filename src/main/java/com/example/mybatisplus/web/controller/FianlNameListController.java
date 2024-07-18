@@ -31,8 +31,8 @@ public class FianlNameListController {
     @GetMapping("/{pageSize}/{pageNum}")
     @ResponseBody
     @ApiOperation(value = "获取最终监考名单", notes = "主任端获取最终监考名单")
-    public JsonResponse<ResponseWIthPageInfo> getFinalNameList(@PathVariable("pageNum") int pageNum,@PathVariable("pageSize") int pageSize) throws Exception {
-        PageHelper.startPage(pageNum, pageSize);
+    public JsonResponse<ResponseWIthPageInfo> getFinalNameList(@PathVariable("pageNum") int pageNum) throws Exception {
+        PageHelper.startPage(pageNum, 2);
         List<FinalLiist> list = signupService.getFinalNameList();
         if (list == null || list.isEmpty()) throw new Exception("未找到监名单考");
         PageInfo<FinalLiist> pageInfo = new PageInfo<>(list);
@@ -52,5 +52,6 @@ public class FianlNameListController {
         long total = pageInfo.getTotal();
         return JsonResponse.success(ResponseWIthPageInfo.builder().data(list).total(total).build());
     }
+
 
 }

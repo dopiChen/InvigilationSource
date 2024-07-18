@@ -15,6 +15,27 @@
         <result column="address" property="address"/>
     </resultMap>
 
+    <resultMap id="PerUserMap" type="com.example.mybatisplus.model.domain.FlowItem">
+        <association property="personnel" javaType="com.example.mybatisplus.model.domain.Personnel">
+            <id column="username" property="username"/>
+            <result column="name" property="name"/>
+            <result column="unit" property="unit"/>
+            <result column="gender" property="gender"/>
+            <result column="edu_background" property="eduBackground"/>
+            <result column="phone" property="phone"/>
+            <result column="backup_phone" property="backupPhone"/>
+            <result column="photo" property="photo"/>
+            <result column="address" property="address"/>
+        </association>
+        <association property="user" javaType="com.example.mybatisplus.model.domain.User">
+            <id column="username" property="username"/>
+            <result column="name" property="name" />
+            <result column="usertype" property="usertype" />
+            <result column="is_deleted" property="isDeleted" />
+            <result column="is_enabled" property="isEnabled" />
+        </association>
+    </resultMap>
+
     <resultMap id="FlowItemMap" type="com.example.mybatisplus.model.domain.FlowItem">
         <association property="personnel" javaType="com.example.mybatisplus.model.domain.Personnel">
             <id column="username" property="username"/>
@@ -33,5 +54,18 @@
         WHERE p.unit = #{unit}
           AND u.usertype != 1
     </select>
-
+    <select id="getperuserList" resultMap="PerUserMap">
+        SELECT *
+        FROM personnel p
+                 JOIN user u ON p.username = u.username
+        WHERE p.unit = #{unit}
+        AND u.is_deleted=0
+    </select>
+    <select id="selectUnitCounts" resultType="com.example.mybatisplus.model.dto.UnitCountDTO">
+        SELECT p.unit, COUNT(DISTINCT p.username) AS count
+        FROM personnel p
+            JOIN user u ON p.username = u.username
+        WHERE u.is_deleted = 0
+        GROUP BY p.unit
+    </select>
 </mapper>
