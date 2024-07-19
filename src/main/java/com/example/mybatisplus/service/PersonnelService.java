@@ -5,6 +5,7 @@ import com.example.mybatisplus.model.domain.FlowItem;
 import com.example.mybatisplus.model.domain.Personnel;
 import com.baomidou.mybatisplus.extension.service.IService;
 import com.example.mybatisplus.model.dto.PageDTO;
+import com.example.mybatisplus.model.dto.PerUserDTO;
 import com.example.mybatisplus.model.dto.UnitCountDTO;
 
 import java.util.List;
@@ -26,4 +27,6 @@ public interface PersonnelService extends IService<Personnel> {
     List<FlowItem> getperuserList(String unit);
 
     List<UnitCountDTO> selectUnitCounts();
+
+    List<PerUserDTO> getperuserListdto(String unit);
 }

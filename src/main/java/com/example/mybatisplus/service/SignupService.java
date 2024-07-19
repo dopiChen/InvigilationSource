@@ -5,6 +5,7 @@ import com.example.mybatisplus.model.domain.FinalLiist;
 import com.example.mybatisplus.model.domain.Signup;
 import com.baomidou.mybatisplus.extension.service.IService;
 import com.example.mybatisplus.model.dto.PageDTO;
+import com.example.mybatisplus.model.dto.PersonnelExaminationDTO;
 
 import java.util.List;
 
@@ -18,7 +19,8 @@ import java.util.List;
  */
 public interface SignupService extends IService<Signup> {
 
-    List<Signup> getExamineSignUp(String username,int usertype);
+
+    List<Signup> getExamineSignUp(String username, int usertype);
 
     List<Signup> getExamineSignUpByKeyword(String username, int usertype,String keyword);
 
@@ -39,4 +41,6 @@ public interface SignupService extends IService<Signup> {
     Page<Signup> allComfirmPageList(String username, Signup signup, PageDTO pageDTO);
 
     Page<Signup> searchAllComfirmPageList(String username, int examId, PageDTO pageDTO);
+
+    List<PersonnelExaminationDTO> getFinalNameListdto();
 }

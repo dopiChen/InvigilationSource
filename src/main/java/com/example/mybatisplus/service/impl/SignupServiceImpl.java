@@ -3,19 +3,16 @@ package com.example.mybatisplus.service.impl;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.core.conditions.update.UpdateWrapper;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
-import com.example.mybatisplus.model.domain.Batch;
 import com.example.mybatisplus.model.domain.FinalLiist;
 import com.example.mybatisplus.model.domain.Signup;
 import com.example.mybatisplus.mapper.SignupMapper;
 import com.example.mybatisplus.model.dto.PageDTO;
+import com.example.mybatisplus.model.dto.PersonnelExaminationDTO;
 import com.example.mybatisplus.service.SignupService;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
-import com.github.pagehelper.PageHelper;
-import com.github.pagehelper.PageInfo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.util.Collections;
 import java.util.List;
 
 /**
@@ -30,6 +27,7 @@ import java.util.List;
 public class SignupServiceImpl extends ServiceImpl<SignupMapper, Signup> implements SignupService {
     @Autowired
     private SignupMapper signupMapper;
+
 
     @Override
     public List<Signup> getExamineSignUp(String username, int usertype) {
@@ -105,6 +103,11 @@ public class SignupServiceImpl extends ServiceImpl<SignupMapper, Signup> impleme
         page.setCurrent(pageDTO.getPageNo()).setSize(pageDTO.getPageSize());
         baseMapper.selectPage(page, wrapper);
         return page;
+    }
+
+    @Override
+    public List<PersonnelExaminationDTO> getFinalNameListdto() {
+        return signupMapper.getFinalNameListdto();
     }
 
 

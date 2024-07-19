@@ -1,6 +1,13 @@
 package com.example.mybatisplus.web.controller;
 
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
+import com.example.mybatisplus.model.domain.ExamSign;
+import com.example.mybatisplus.model.domain.FlowItem;
+import com.example.mybatisplus.model.dto.ExamSignDTO;
+import com.example.mybatisplus.model.dto.ResponseWIthPageInfo;
+import com.example.mybatisplus.model.dto.UnitCountDTO;
+import com.github.pagehelper.PageHelper;
+import com.github.pagehelper.PageInfo;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -54,6 +61,25 @@ public class ExaminationController {
     public JsonResponse<Examination> getExaminationById(@PathVariable("id") int id) {
         Examination examination = examinationService.getById(id);
         return JsonResponse.success( examination);
+    }
+
+    @GetMapping("/{pageNum}/{pageSize}/{examRoom}")
+    @ResponseBody
+    public JsonResponse ems(@PathVariable("pageNum")int pageNum, @PathVariable("pageSize") int pageSize,@PathVariable("examRoom")String examRoom){
+        PageHelper.startPage(pageNum, pageSize);
+        List<ExamSignDTO> examSignDTOS=examinationService.selectemsDTO(examRoom);
+        PageInfo<ExamSignDTO> pageInfo = new PageInfo<>(examSignDTOS);
+        long total = pageInfo.getTotal();
+        return JsonResponse.success(ResponseWIthPageInfo.builder().data(examSignDTOS).total(total).build());
+    }
+    @GetMapping("/{pageNum}/{pageSize}/")
+    @ResponseBody
+    public JsonResponse ems1(@PathVariable("pageNum")int pageNum, @PathVariable("pageSize") int pageSize){
+        PageHelper.startPage(pageNum, pageSize);
+        List<ExamSignDTO> examSignDTOS=examinationService.selectemsDTO1();
+        PageInfo<ExamSignDTO> pageInfo = new PageInfo<>(examSignDTOS);
+        long total = pageInfo.getTotal();
+        return JsonResponse.success(ResponseWIthPageInfo.builder().data(examSignDTOS).total(total).build());
     }
 
 }

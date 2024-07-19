@@ -5,6 +5,7 @@ import com.example.mybatisplus.model.domain.FlowResponse;
 import com.example.mybatisplus.model.domain.Personnel;
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 import com.example.mybatisplus.model.domain.Signup;
+import com.example.mybatisplus.model.dto.PerUserDTO;
 import com.example.mybatisplus.model.dto.UnitCountDTO;
 import org.apache.ibatis.annotations.Param;
 import org.apache.ibatis.annotations.Select;
@@ -25,4 +26,6 @@ public interface PersonnelMapper extends BaseMapper<Personnel> {
     List<FlowItem> getperuserList(@Param("unit") String unit);
 
     List<UnitCountDTO> selectUnitCounts();
+
+    List<PerUserDTO> getperuserListdto(@Param("unit") String unit);
 }

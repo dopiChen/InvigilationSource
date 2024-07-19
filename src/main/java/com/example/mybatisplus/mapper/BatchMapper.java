@@ -1,6 +1,5 @@
 package com.example.mybatisplus.mapper;
 
-import com.example.mybatisplus.common.JsonResponse;
 import com.example.mybatisplus.model.domain.Batch;
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 import org.apache.ibatis.annotations.Mapper;
@@ -20,4 +19,5 @@ import java.util.List;
 public interface BatchMapper extends BaseMapper<Batch> {
 
     List<Batch> searchBatch(@Param("keyword") String keyword);
+
 }

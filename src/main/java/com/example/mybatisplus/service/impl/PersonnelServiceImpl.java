@@ -7,6 +7,7 @@ import com.example.mybatisplus.model.domain.FlowResponse;
 import com.example.mybatisplus.model.domain.Personnel;
 import com.example.mybatisplus.mapper.PersonnelMapper;
 import com.example.mybatisplus.model.dto.PageDTO;
+import com.example.mybatisplus.model.dto.PerUserDTO;
 import com.example.mybatisplus.model.dto.UnitCountDTO;
 import com.example.mybatisplus.service.PersonnelService;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
@@ -71,6 +72,11 @@ public class PersonnelServiceImpl extends ServiceImpl<PersonnelMapper, Personnel
     @Override
     public List<UnitCountDTO> selectUnitCounts() {
         return personnelMapper.selectUnitCounts();
+    }
+
+    @Override
+    public List<PerUserDTO> getperuserListdto(String unit) {
+        return personnelMapper.getperuserListdto(unit);
     }
 
 

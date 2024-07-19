@@ -2,27 +2,19 @@ package com.example.mybatisplus.web.controller;
 
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.example.mybatisplus.model.dto.PageDTO;
-import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.example.mybatisplus.common.JsonResponse;
 import com.example.mybatisplus.model.domain.Batch;
 import com.example.mybatisplus.model.dto.DeleteDTO;
-import com.example.mybatisplus.model.dto.PageDTO;
 import com.example.mybatisplus.service.BatchService;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
-import io.swagger.annotations.Tag;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.stereotype.Controller;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
-import com.example.mybatisplus.common.JsonResponse;
-import com.example.mybatisplus.service.BatchService;
-import com.example.mybatisplus.model.domain.Batch;
 
 import java.util.List;
 import java.util.stream.Collectors;

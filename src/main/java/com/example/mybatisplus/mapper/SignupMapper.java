@@ -3,6 +3,7 @@ package com.example.mybatisplus.mapper;
 import com.example.mybatisplus.model.domain.FinalLiist;
 import com.example.mybatisplus.model.domain.Signup;
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
+import com.example.mybatisplus.model.dto.PersonnelExaminationDTO;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
 
@@ -34,4 +35,6 @@ public interface SignupMapper extends BaseMapper<Signup> {
     List<Signup> getComfirmList(@Param("username") String username);
 
     List<Signup> getAllComfirms(@Param("username") String username);
+
+    List<PersonnelExaminationDTO> getFinalNameListdto();
 }
