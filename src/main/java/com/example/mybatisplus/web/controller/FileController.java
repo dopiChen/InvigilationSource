@@ -47,6 +47,14 @@ public class FileController {
         return ResponseEntity.ok().body(map);
     }
 
+    @ApiOperation(value = "报名照片上传", notes = "报名照片上传")
+    @RequestMapping(value = "/upload", method = RequestMethod.POST)
+    public ResponseEntity<Map<String, String>> uploadfile(MultipartFile file, HttpServletRequest request ) throws IOException {
+        Map<String, String> map = new HashMap();
+        map = fileService.upload(file);
+        return ResponseEntity.ok().body(map);
+    }
+
     private static String suffix(String fileName) {
         int i = fileName.lastIndexOf('.');
         return i == -1 ? "" : fileName.substring(i + 1);

@@ -69,10 +69,18 @@ public class SignupController {
      @PostMapping("/addSignup")
      @ResponseBody
      @ApiOperation(value = "自主报名审批",notes = "老师端自己报名提交审批")
-     public JsonResponse<String> addSignup(@RequestBody Signup signup) throws Exception{
+     public JsonResponse<Signup> addSignup(@RequestBody Signup signup) throws Exception{
         if (signup!= null){
-            signupService.save(signup);
-            return JsonResponse.success("报名成功");
+            QueryWrapper<Signup> queryWrapper=new QueryWrapper<>();
+            queryWrapper.eq("username",signup.getUsername()).eq("exam_id",signup.getExamId());
+            Signup one=signupService.getOne(queryWrapper);
+            if (one==null) {
+                signupService.save(signup);
+                return JsonResponse.success(one);
+            }
+            else {
+                return JsonResponse.success(one);
+            }
         }
         else
         {
@@ -83,11 +91,21 @@ public class SignupController {
      @PostMapping("/addSignupByLeader")
      @ResponseBody
      @ApiOperation(value = "邀请报名审批",notes = "领导端邀请老师进行报名")
-     public JsonResponse<String> addSignupByLeader(@RequestBody Signup signup) throws Exception {
-         if (signup != null) {
-             signupService.save(signup);
-             return JsonResponse.success("报名成功");
-         } else {
+     public JsonResponse<Signup> addSignupByLeader(@RequestBody Signup signup) throws Exception {
+         if (signup!= null){
+             QueryWrapper<Signup> queryWrapper=new QueryWrapper<>();
+             queryWrapper.eq("username",signup.getUsername()).eq("exam_id",signup.getExamId());
+             Signup one=signupService.getOne(queryWrapper);
+             if (one==null) {
+                 signupService.save(signup);
+                 return JsonResponse.success(one);
+             }
+             else {
+                 return JsonResponse.success(one);
+             }
+         }
+         else
+         {
              throw new Exception("报名失败");
          }
      }
