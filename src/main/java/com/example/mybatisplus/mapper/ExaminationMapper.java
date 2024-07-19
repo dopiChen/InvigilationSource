@@ -2,6 +2,10 @@ package com.example.mybatisplus.mapper;
 
 import com.example.mybatisplus.model.domain.Examination;
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
+import com.example.mybatisplus.model.dto.ExamSignDTO;
+import org.apache.ibatis.annotations.Param;
+
+import java.util.List;
 
 /**
  * <p>
@@ -13,4 +17,8 @@ import com.baomidou.mybatisplus.core.mapper.BaseMapper;
  */
 public interface ExaminationMapper extends BaseMapper<Examination> {
 
+
+    List<ExamSignDTO> selectemsDTO(@Param("examRoom")String examRoom);
+
+    List<ExamSignDTO> selectemsDTO1();
 }

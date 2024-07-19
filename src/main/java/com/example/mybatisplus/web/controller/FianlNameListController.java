@@ -6,6 +6,7 @@ import com.example.mybatisplus.model.domain.FinalLiist;
 import com.example.mybatisplus.model.domain.Batch;
 import com.example.mybatisplus.model.domain.FinalLiist;
 import com.example.mybatisplus.model.domain.Signup;
+import com.example.mybatisplus.model.dto.PersonnelExaminationDTO;
 import com.example.mybatisplus.model.dto.ResponseWIthPageInfo;
 import com.example.mybatisplus.model.dto.PageDTO;
 import com.example.mybatisplus.service.SignupService;
@@ -31,8 +32,8 @@ public class FianlNameListController {
     @GetMapping("/{pageSize}/{pageNum}")
     @ResponseBody
     @ApiOperation(value = "获取最终监考名单", notes = "主任端获取最终监考名单")
-    public JsonResponse<ResponseWIthPageInfo> getFinalNameList(@PathVariable("pageNum") int pageNum) throws Exception {
-        PageHelper.startPage(pageNum, 2);
+    public JsonResponse<ResponseWIthPageInfo> getFinalNameList(@PathVariable("pageNum") int pageNum,@PathVariable("pageSize") int pageSize) throws Exception {
+        PageHelper.startPage(pageNum, pageSize);
         List<FinalLiist> list = signupService.getFinalNameList();
         if (list == null || list.isEmpty()) throw new Exception("未找到监名单考");
         PageInfo<FinalLiist> pageInfo = new PageInfo<>(list);
@@ -47,10 +48,20 @@ public class FianlNameListController {
     public JsonResponse<ResponseWIthPageInfo> searchFinalNameList(@PathVariable("keyword") String keyword, @PathVariable("pageNum") int pageNum, @PathVariable("pageSize") int pageSize) throws Exception {
         PageHelper.startPage(pageNum, pageSize);
         List<FinalLiist> list = signupService.getFinalNameListByKeyword(keyword);
-        if (list == null || list.isEmpty()) throw new Exception("未找到监名单考");
         PageInfo<FinalLiist> pageInfo = new PageInfo<>(list);
         long total = pageInfo.getTotal();
         return JsonResponse.success(ResponseWIthPageInfo.builder().data(list).total(total).build());
+    }
+
+    @GetMapping("/dto/{pageSize}/{pageNum}")
+    @ResponseBody
+    @ApiOperation(value = "获取最终监考名单", notes = "主任端获取最终监考名单")
+    public JsonResponse<ResponseWIthPageInfo> getFinalNameListDTO(@PathVariable("pageNum") int pageNum,@PathVariable("pageSize") int pageSize) throws Exception {
+        PageHelper.startPage(pageNum, pageSize);
+        List<PersonnelExaminationDTO> personnelExaminationDTOS = signupService.getFinalNameListdto();
+        PageInfo<PersonnelExaminationDTO> pageInfo = new PageInfo<>(personnelExaminationDTOS);
+        long total = pageInfo.getTotal();
+        return JsonResponse.success(ResponseWIthPageInfo.builder().data(personnelExaminationDTOS).total(total).build());
     }
 
 

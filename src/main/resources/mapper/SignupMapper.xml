@@ -88,7 +88,7 @@
         FROM signup s
                  LEFT JOIN personnel p ON s.username = p.username
                  LEFT JOIN examination e ON s.exam_id = e.exam_id
-        WHERE s.approval_status = 5 AND p.username = #{keyword}
+        WHERE s.approval_status = 5 AND p.username LIKE CONCAT('%', #{keyword}, '%')
     </select>
     <select id="getComfirmList" resultMap="BaseResultMap">
         select *
@@ -99,5 +99,14 @@
         select *
         from signup
         where username=#{username} and approval_status=5
+    </select>
+    <select id="getFinalNameListdto" resultType="com.example.mybatisplus.model.dto.PersonnelExaminationDTO">
+        SELECT
+            p.username , p.unit , p.name ,p.gender,p.phone,-- 添加 personnel 表的需要显示的属性
+            e.exam_id, e.exam_room ,e.from_time ,e.end_time-- 添加 examination 表的需要显示的属性
+        FROM signup s
+                 LEFT JOIN personnel p ON s.username = p.username
+                 LEFT JOIN examination e ON s.exam_id = e.exam_id
+        WHERE s.approval_status = 5
     </select>
 </mapper>

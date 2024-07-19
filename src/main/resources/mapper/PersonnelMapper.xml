@@ -68,4 +68,11 @@
         WHERE u.is_deleted = 0
         GROUP BY p.unit
     </select>
+    <select id="getperuserListdto" resultType="com.example.mybatisplus.model.dto.PerUserDTO">
+        SELECT *
+        FROM personnel p
+                 JOIN user u ON p.username = u.username
+        WHERE p.unit = #{unit}
+          AND u.is_deleted=0
+    </select>
 </mapper>

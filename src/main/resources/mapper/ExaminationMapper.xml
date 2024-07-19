@@ -12,5 +12,35 @@
         <result column="from_time" property="fromTime" />
         <result column="end_time" property="endTime" />
     </resultMap>
-
+    <select id="selectemsDTO" resultType="com.example.mybatisplus.model.dto.ExamSignDTO">
+        SELECT
+            e.exam_id,
+            e.exam_room,
+            e.from_time,
+            e.end_time,
+            COUNT(DISTINCT s.username) AS totalnum,
+            COUNT(DISTINCT CASE WHEN s.is_comfirm = 1 THEN s.username END) AS count
+        FROM
+            examination e
+            JOIN
+            signup s ON e.exam_id = s.exam_id
+        WHERE e.exam_room LIKE CONCAT('%', #{examRoom}, '%')
+        GROUP BY
+            e.exam_id
+    </select>
+    <select id="selectemsDTO1" resultType="com.example.mybatisplus.model.dto.ExamSignDTO">
+        SELECT
+            e.exam_id,
+            e.exam_room,
+            e.from_time,
+            e.end_time,
+            COUNT(DISTINCT s.username) AS totalnum,
+            COUNT(DISTINCT CASE WHEN s.is_comfirm = 1 THEN s.username END) AS count
+        FROM
+            examination e
+            JOIN
+            signup s ON e.exam_id = s.exam_id
+        GROUP BY
+            e.exam_id
+    </select>
 </mapper>
