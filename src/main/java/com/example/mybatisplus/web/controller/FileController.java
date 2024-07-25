@@ -41,6 +41,8 @@ public class FileController {
     BatchServiceImpl batchService;
     @Autowired
     ExaminationServiceImpl examinationService;
+    @Autowired
+    ExaminationDataServiceImpl examinationDataService;
     protected ResourceLoader resourceLoader;
     private static final String UPLOAD_DIR = "/src/main/resources/uploads/";
     public FileController(FileService fileService, ResourceLoader resourceLoader) {
@@ -79,7 +81,7 @@ public class FileController {
         log.info("成功接收文件:{}", file.getOriginalFilename());
         try {
             // 使用 EasyExcel 读取 Excel 文件
-            EasyExcel.read(file.getInputStream(), Examination.class, new BatchDataListener(batchDataService,batchService,examinationService)).sheet("Sheet").doRead();
+            EasyExcel.read(file.getInputStream(), Examination.class, new ExaminationDataListener(examinationDataService,batchService,examinationService)).sheet("Sheet").doRead();
             response = "文件上传成功";
             return ResponseEntity.ok(response);
         } catch (IOException e) {
@@ -101,7 +103,7 @@ public class FileController {
         log.info("成功接收文件:{}", file.getOriginalFilename());
         try {
             // 使用 EasyExcel 读取 Excel 文件
-            EasyExcel.read(file.getInputStream(), Batch.class, new BatchDataListener(batchDataService,batchService,examinationService)).sheet("Sheet").doRead();
+            EasyExcel.read(file.getInputStream(), Batch.class, new BatchDataListener(batchDataService,batchService)).sheet("Sheet").doRead();
             response = "文件上传成功";
             return ResponseEntity.ok(response);
         } catch (IOException e) {

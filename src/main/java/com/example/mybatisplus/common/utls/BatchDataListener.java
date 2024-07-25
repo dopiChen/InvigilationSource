@@ -27,14 +27,11 @@ public class BatchDataListener extends AnalysisEventListener<Batch> {
 
     private BatchServiceImpl batchServiceImpl;
 
-    private ExaminationServiceImpl examinationServiceImpl;
-
     private List<Batch> dataList = ListUtils.newArrayListWithExpectedSize(BATCH_COUNT);
 
-    public BatchDataListener(BatchDataService batchDataService, BatchServiceImpl batchServiceImpl, ExaminationServiceImpl examinationServiceImpl) {
+    public BatchDataListener(BatchDataService batchDataService, BatchServiceImpl batchServiceImpl) {
         this.batchDataService = batchDataService;
         this.batchServiceImpl = batchServiceImpl;
-        this.examinationServiceImpl = examinationServiceImpl;
     }
 
 
