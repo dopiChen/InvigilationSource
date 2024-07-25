@@ -1,11 +1,14 @@
 package com.example.mybatisplus.web.controller;
 
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
+import com.example.mybatisplus.model.domain.Examination;
 import com.example.mybatisplus.model.dto.PageDTO;
 import com.example.mybatisplus.common.JsonResponse;
 import com.example.mybatisplus.model.domain.Batch;
 import com.example.mybatisplus.model.dto.DeleteDTO;
 import com.example.mybatisplus.service.BatchService;
+import com.example.mybatisplus.service.ExaminationService;
+import com.example.mybatisplus.service.SignupService;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
 import io.swagger.annotations.Api;
@@ -36,6 +39,8 @@ public class BatchController {
 
     @Autowired
     private BatchService batchService;
+    @Autowired
+    private ExaminationService examinationService;
 
     //获取全部批次
     @GetMapping("/AllBatches")
@@ -88,13 +93,21 @@ public class BatchController {
     @GetMapping("/removeById")
     @ResponseBody
     public JsonResponse removeById(long id){
+        List<Integer> e=examinationService.getByBatchId(id);
+        boolean a=examinationService.removeByIds(e);
         boolean b = batchService.removeById(id);
-        return JsonResponse.success(b);
+        return JsonResponse.success(b&&a);
     }
     @PostMapping("/removeByIds")
     public JsonResponse removeByIds(@RequestBody DeleteDTO dto){
-        boolean b = batchService.removeByIds(dto.getIds());
-        return JsonResponse.success(b);
+        for(Long id : dto.getIds()){
+            List<Integer> e=examinationService.getByBatchId(id);
+            boolean a=examinationService.removeByIds(e);
+            boolean b=batchService.removeById(id);
+            if(a||b==false)
+                return JsonResponse.success(false);
+        }
+        return JsonResponse.success(true);
     }
 
 }

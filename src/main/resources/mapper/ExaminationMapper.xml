@@ -43,4 +43,7 @@
         GROUP BY
             e.exam_id
     </select>
+    <select id="getByBacthId" resultType="java.lang.Integer">
+        select exam_id from examination where batch_id = #{id}
+    </select>
 </mapper>

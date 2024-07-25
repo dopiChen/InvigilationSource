@@ -35,4 +35,9 @@ public class ExaminationServiceImpl extends ServiceImpl<ExaminationMapper, Exami
     public List<ExamSignDTO> selectemsDTO1() {
         return examinationMapper.selectemsDTO1();
     }
+
+    @Override
+    public List<Integer> getByBatchId(long id) {
+        return examinationMapper.getByBacthId(id);
+    }
 }

@@ -21,4 +21,6 @@ public interface ExaminationService extends IService<Examination> {
     List<ExamSignDTO> selectemsDTO(String examRoom);
 
     List<ExamSignDTO> selectemsDTO1();
+
+    List<Integer> getByBatchId(long id);
 }

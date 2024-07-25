@@ -21,4 +21,6 @@ public interface ExaminationMapper extends BaseMapper<Examination> {
     List<ExamSignDTO> selectemsDTO(@Param("examRoom")String examRoom);
 
     List<ExamSignDTO> selectemsDTO1();
+
+    List<Integer> getByBacthId(long id);
 }
