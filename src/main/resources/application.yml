@@ -24,9 +24,9 @@ server:
 mybatis:
   mapper-locations: classpath:/mybatis/mapper/*.xml, classpath:/mybatis/mapper/extend/*.xml
 
-logging:
-  level:
-    com.example.mybatisplus.mapper: debug
+#logging:
+#  level:
+#    com.example.mybatisplus.mapper: debug
 file-upload-path: ./file
 #阿里云api密钥
 aliyun:
